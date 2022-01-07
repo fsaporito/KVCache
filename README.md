@@ -36,4 +36,11 @@ Then, to actually compile the code, you can use directly cmake via the following
 ```Bash
 cmake --build ./build
 ```
-CMake will automatically pick the predefined compiler. On Linux systems you can 
+CMake will automatically pick the predefined compiler. On Linux systems you can change it via the "CXX" system variable.
+
+Automatic Tests can be run from the build directly via CMake. 
+```Bash
+cd build
+ctest -C Debug
+```
+This library uses the Catch2 framework for automatic testing.

@@ -9,7 +9,7 @@ target_link_libraries(catch_main PRIVATE project_options)
 
 include_directories (../src) 
 
-add_executable(tests creationTests.cpp)
+add_executable(tests KVCacheCreationTests.cpp)
 target_link_libraries(
     tests 
     PRIVATE 

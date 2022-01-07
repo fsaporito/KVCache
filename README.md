@@ -1,76 +1,39 @@
-# CppCMakeStarter
-Template Project for C++ with CMake
+# KV Cache
+C++ Implementation of a Key-Value cache 
 
-====
-Cpp Template Project for Crossplatform development.
-
-Got ideas and tricks from
-
-https://github.com/cpp-best-practices/cpp_starter_project
-
-https://github.com/aminya/setup-cpp
-
-https://github.com/cpp-best-practices/project_options
-
-CMake/C++ QuickStart at C++Weekly: https://www.youtube.com/watch?v=YbgH7yat-Jo
-
-Git, CMake and Conan Talk at CppCon 2018: https://www.youtube.com/watch?v=S4QSKLXdTtA
-
-Effective CMake at CppNow 2017: https://www.youtube.com/watch?v=bsXLMQ6WgIk
 
 ### Tools and Required Software
-Before the project template can be used, you should check that all the necessary softwares and tools are installed.
-To do this on linux ubuntu, there are two scripts:
+Before the project can be used, you should check that all the necessary softwares and tools are installed.
+Mandatory are the following:
+
+        1. A compiler compatible with C++17
+        2. Cmake
+        3. Conan (Also vckpg can be configured but isn't tested at the moment)
+
+To do setup the environment on linux ubuntu, there are two scripts that can be used:
 
 1. For installing conan
 ```Bash
 scripts/conan_install.sh
 ```
 
-2. For Installing the oter Cpp tools
+2. For Installing the other Cpp tools
 ```Bash
 scripts/cpp_tools_install.sh
 ```
 
-### Guide to Customize the Template Project
+This script will also install other software for static code analysis, documentation and related things. These are optional but they are strongly suggested for development since they improve code quality.
+Furthermore, a clang-format file is present the root folder to have a standard formatting for the codebase.
 
-1. Open CMakeLists.txt in the root folder and change the project name
+### Build
+This software uses cmake for generating the build system configuration.
 
-2. Open the conanfile.py and change the line 5
-```Python
-name = "CppCMakeStarter"
+In particular, starting from the root directory, the command to generate the build configuration is:
+```Bash
+cmake -S . -B ./build
 ```
-with the selected project name.
-
-3. Open the conanfile.py and change the lines 7 to 11
-```Python
-requires = (
-        "catch2/2.13.7",
-        "docopt.cpp/0.6.2",
-        "spdlog/1.9.2",
-    )
+Then, to actually compile the code, you can use directly cmake via the following command launched from the root directory
+```Bash
+cmake --build ./build
 ```
-with the actual dependencies for the project
-
-4. Unit tests are configured with Catch. Change the test/tests.cpp to add more tests.
-To add more test files, change the test/CMakeLists.txt line 10 from this
-```CMakeLists.txt
-add_executable(tests tests.cpp)
-```
-to for example this
-```
-add_executable(tests testsClass1.cpp testsClass2.cpp testsClass3.cpp)
-```
-
-
-5. Fuzz tests are configured with libFuzzer. Change the fuzz_test/fuzz_tester.cpp to add more tests.
-To add more test files, change the fuzz_tester/CMakeLists.txt line 5 from this
-```CMakeLists.txt
-add_executable(fuzz_tester fuzz_tester.cpp)
-```
-to for example this
-```
-add_executable(fuzz_tester fuzz_tester1.cpp fuzz_tester2.cpp)
-```
-
-6. To add Code Modules, open src/CMakeLists and edit the lib1 and lib2 to add your own modules. Then create the folders and their respective CMakeLists.txt
+CMake will automatically pick the predefined compiler. On Linux systems you can 

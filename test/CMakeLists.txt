@@ -9,16 +9,15 @@ target_link_libraries(catch_main PRIVATE project_options)
 
 include_directories (../src) 
 
-add_executable(tests tests.cpp)
+add_executable(tests creationTests.cpp)
 target_link_libraries(
     tests 
     PRIVATE 
         project_warnings 
         project_options 
         catch_main
-        fact
-        prime)
-message(STATUS "Target TEST created successfully") 
+        KVCache)
+message(STATUS "Target TEST created successfully")
 
 # automatically discover tests that are defined in catch based test files you can modify the unittests. Set TEST_PREFIX
 # to whatever you want, or use different for different binaries

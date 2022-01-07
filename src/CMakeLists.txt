@@ -1,17 +1,11 @@
-option(USE_FACTORIAL "Enable compilation of FACTORIAL" ON)
-option(USE_PRIME "Enable compilation of PRIME" ON)
+option(USE_KVCACHE "Enable compilation of KVCACHE" ON)
 
-# lib1
-if(USE_FACTORIAL)
-  message("Using FACT")
-  add_subdirectory(factorial)
+# KVCACHE
+if(USE_KVCACHE)
+  message("Compiling KVCACHE")
+  add_subdirectory(KVCache)
 endif()
 
-# lib2
-if(USE_PRIME)
-  message("Using PRIME")
-  add_subdirectory(prime)
-endif()
 
 find_package(spdlog)
 find_package(docopt)
@@ -22,7 +16,6 @@ target_link_libraries(
   intro
   PUBLIC project_options
           project_warnings
-          fact
-          prime
+          KVCache
           docopt::docopt
           spdlog::spdlog)

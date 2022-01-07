@@ -15,7 +15,7 @@ include(${_project_options_SOURCE_DIR}/Index.cmake)
 # run_vcpkg()
 
 # Set the project name and language
-project(myproject LANGUAGES CXX)
+project(KVCache LANGUAGES CXX)
 
 # Initialize project_options variable related to this project
 # uncomment the options to enable them:

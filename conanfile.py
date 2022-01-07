@@ -3,7 +3,7 @@ from conans import ConanFile
 
 
 class CppStarterProject(ConanFile):
-    name = "CppCMakeStarter"
+    name = "KVCache"
     version = "0.1"
     requires = (
         "catch2/2.13.7",

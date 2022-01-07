@@ -43,4 +43,11 @@ Automatic Tests can be run from the build directly via CMake.
 cd build
 ctest -C Debug
 ```
-This library uses the Catch2 framework for automatic testing.
+This library uses the [Catch2](https://github.com/catchorg/Catch2) framework for automatic testing.
+
+Countinuous Integration
+
+This project uses [appveyor](https://ci.appveyor.com) for running continuous integration. After every commit, the source code is compiled and tested on the following environments:
+        - Linux Ubuntu 20.04 with GCC 9.3.0
+        - Windows Server 2019 with MSBuild VC141
+        - Windows Server 2019 with MSBuild VC142

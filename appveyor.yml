@@ -1,0 +1,68 @@
+image:  
+  - Ubuntu2004
+  - Visual Studio 2019
+  - Visual Studio 2022
+ # - macos  
+#platform:
+#  - x86
+#  - x64
+test_script:
+  - cmd: cd build && ctest -C Debug
+skip_commits: # Add [av skip] to commit messages to skip AppVeyor building
+  message: /\[av skip\]/
+for:
+  -
+    matrix:
+      only:
+      - image: Ubuntu2004  
+    clone_folder: ~/source
+    install:
+    - sudo apt-get update
+    #- sudo apt-get install ccache
+    - sudo apt-get --yes install python3-pip
+    - pip3 --version
+    - pip3 install conan
+    - source ~/.profile # Restart session so that conan is now in the PATH
+    - conan --version
+    build_script:
+      - cmake -S ~/source -B ./build
+      - cmake --build ./build
+  -
+    matrix:
+      only:
+      - image: Visual Studio 2019
+    environment:
+      PYTHON: "C:\\Python38-x64\\python.exe"
+    clone_folder: c:\projects\source
+    build_script:
+        - cmd: |
+            set PATH=%PATH%;C:\Users\appveyor\AppData\Roaming\Python\Python38\Scripts
+            "%PYTHON%" -m pip install --user conan
+            cmake -S c:\projects\source -B ./build -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE:STRING=Release
+            cmake --build ./build --config "Release"
+  -
+    matrix:
+      only:
+      - image: Visual Studio 2022
+    environment:
+      PYTHON: "C:\\Python38-x64\\python.exe"
+    clone_folder: c:\projects\source
+    build_script:
+        - cmd: |
+            set PATH=%PATH%;C:\Users\appveyor\AppData\Roaming\Python\Python38\Scripts
+            "%PYTHON%" -m pip install --user conan
+            cmake -S c:\projects\source -B ./build -G "Visual Studio 17 2022" -DCMAKE_BUILD_TYPE:STRING=Release
+            cmake --build ./build --config "Release"
+  #-
+  #  matrix:
+  #    only:
+  #    - image: macos      
+  #  configuration:
+  #    - Release
+  #  clone_folder: ~/source
+  #  install:
+  #    - brew update # Extremely Long
+  #    - brew install conan
+  #  build_script:
+  #    - cmake -S ~/source -B ./build
+  #    - cmake --build ./build

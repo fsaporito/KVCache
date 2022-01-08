@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Set Cpp Version
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # Add project_options v0.12.2
 # https://github.com/cpp-best-practices/project_options

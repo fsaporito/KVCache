@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>
+#include <string>
 
 namespace KVCache
 {
@@ -19,12 +20,38 @@ namespace KVCache
             ORDERED_MAP,
             UNORDERED_MAP
         };
+        inline std::string MemoryCacheTypeToString(MemoryCacheType memCacheType)
+        {
+            switch(memCacheType)
+            {
+                using enum MemoryCacheType;
+                case ORDERED_MAP:
+                    return "Ordered Map";
+                case UNORDERED_MAP:
+                    return "Unordered Map";
+                default:
+                    return "Unknown";
+            }
+        }
 
         enum class StorageCacheType
         {
             NONE,
             LINEAR_FILE
         };
+        inline std::string StorageCacheTypeToString(StorageCacheType storageCacheType)
+        {
+            switch(storageCacheType)
+            {
+                using enum StorageCacheType;
+                case NONE:
+                    return "None";
+                case LINEAR_FILE:
+                    return "Linear File";
+                default:
+                    return "Unknown";
+            }
+        }
 
         enum class CacheEvictionStrategy
         {
@@ -32,6 +59,21 @@ namespace KVCache
             LRU,
             FLU
         };
+        inline std::string CacheEvictionStrategyToString(CacheEvictionStrategy cacheEvictionStrategy)
+        {
+            switch(cacheEvictionStrategy)
+            {
+                using enum CacheEvictionStrategy;
+                case FIFO:
+                    return "None";
+                case LRU:
+                    return "LRU";
+                case FLU:
+                    return "FLU";
+                default:
+                    return "Unknown";
+            }
+        }
 
     }   // namespace Interface
 }   // namespace KVCache

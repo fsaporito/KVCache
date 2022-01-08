@@ -1,5 +1,6 @@
 #pragma once
 #include "../KVCacheInterface/KVCacheAbstract.h"
+#include "../MemoryCache/AbstractMemoryCache.h"
 #include <memory>
 
 namespace KVCache
@@ -7,6 +8,14 @@ namespace KVCache
     namespace Internal
     {
 
+        namespace MemoryCache
+        {
+            class AbstractMemoryCache;
+        }
+
+        /*! 
+         *  This class gives a concrete implementation of the KVCache Virtual Class.
+         */
         class KVCacheImpl: public Interface::KVCacheAbstract
         {
           public:
@@ -22,6 +31,7 @@ namespace KVCache
 
           protected:
             void setupKVCache(const Interface::KVOptionalParameters& optionalParams);
+            std::unique_ptr<MemoryCache::AbstractMemoryCache> m_memoryCache;
         };
     }   // namespace Internal
 }   // namespace KVCache

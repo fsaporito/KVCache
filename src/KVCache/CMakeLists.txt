@@ -8,7 +8,10 @@ add_library(${KVCacheLibName} STATIC
   KVCacheInterface/KVOptionalParameters.cpp
   KVCacheInterface/KVOptionalParameters.h
   KVCacheImpl/KVCacheImpl.cpp 
-  KVCacheImpl/KVCacheImpl.h)
+  KVCacheImpl/KVCacheImpl.h
+  MemoryCache/AbstractMemoryCache.cpp
+  MemoryCache/AbstractMemoryCache.h
+  MemoryCache/MemoryCacheMap.h)
 if(WIN32 OR MSVC OR MSYS OR MINGW) # Windows: lib extension										
 	set_target_properties(${KVCacheLibName} PROPERTIES SUFFIX ".lib")
 elseif(UNIX AND NOT(APPLE)) # Linux: so extension
@@ -16,7 +19,10 @@ elseif(UNIX AND NOT(APPLE)) # Linux: so extension
 endif()
 message(STATUS " - Target ${KVCacheLibName} created successfully")
 
+find_package(spdlog)
+
 target_link_libraries(
   ${KVCacheLibName}
   PUBLIC project_options
-          project_warnings)
+          project_warnings
+          spdlog::spdlog)

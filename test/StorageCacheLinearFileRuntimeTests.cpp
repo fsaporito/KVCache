@@ -1,8 +1,10 @@
 #include "KVCache/StorageCache/StorageCacheLinearFile.h"
+#include "testHelpers.h"
 #include <catch2/catch.hpp>
+#include <vector>
 
 
-TEST_CASE("Put 1 KV Pair into StorageCacheLinearFile", "[runtime],[StorageCacheLinearFile][SingleThread]")
+TEST_CASE("Put 1 KV Pair StorageCacheLinearFile", "[runtime],[Put],[Singlepair],[StorageCacheLinearFile][SingleThread]")
 {
 
     // Initialize StorageCache
@@ -18,7 +20,7 @@ TEST_CASE("Put 1 KV Pair into StorageCacheLinearFile", "[runtime],[StorageCacheL
     REQUIRE(storageCache->size() == 1);
 }
 
-TEST_CASE("Put 2 KV Pairs into StorageCacheLinearFile", "[runtime],[StorageCacheLinearFiles][SingleThread]")
+TEST_CASE("Put 2 KV Pairs StorageCacheLinearFile", "[runtime],[Put],[Multipair],[StorageCacheLinearFiles][SingleThread]")
 {
 
     // Initialize StorageCache
@@ -40,7 +42,7 @@ TEST_CASE("Put 2 KV Pairs into StorageCacheLinearFile", "[runtime],[StorageCache
     REQUIRE(storageCache->size() == 2);
 }
 
-TEST_CASE("Put + Get KV Pair into StorageCacheLinearFile by Single Thread", "[runtime],[StorageCacheLinearFile][SingleThread]")
+TEST_CASE("Put + Get KV Pair StorageCacheLinearFile Single Thread", "[runtime],[Put],[Get],[Singlepair],[StorageCacheLinearFile][SingleThread]")
 {
     // Initialize StorageCache
     auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
@@ -61,7 +63,7 @@ TEST_CASE("Put + Get KV Pair into StorageCacheLinearFile by Single Thread", "[ru
     REQUIRE(valueRead == value);
 }
 
-TEST_CASE("Put + Get + Update KV Pair into StorageCacheLinearFile by Single Thread", "[runtime],[StorageCacheLinearFile][SingleThread]")
+TEST_CASE("Put + Get + Update KV Pair StorageCacheLinearFile Single Thread", "[runtime],[Put],[Get],[Singlepair],[StorageCacheLinearFile][SingleThread]")
 {
     // Initialize StorageCache
     auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
@@ -93,7 +95,7 @@ TEST_CASE("Put + Get + Update KV Pair into StorageCacheLinearFile by Single Thre
     REQUIRE(valueRead2 == newValue);
 }
 
-TEST_CASE("Get Faillure on Empty StorageCacheLinearFile by Single Thread", "[runtime],[StorageCacheLinearFile][SingleThread]")
+TEST_CASE("Get Faillure on Empty StorageCacheLinearFile Single Thread", "[runtime],[Get],[Singlepair],[StorageCacheLinearFile][SingleThread]")
 {
     // Initialize StorageCache
     auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
@@ -106,7 +108,7 @@ TEST_CASE("Get Faillure on Empty StorageCacheLinearFile by Single Thread", "[run
     REQUIRE_THROWS(storageCache->get(key));
 }
 
-TEST_CASE("Put + Remove KV Pair into StorageCacheLinearFile by Single Thread", "[runtime],[StorageCacheLinearFile][SingleThread]")
+TEST_CASE("Put + Remove KV Pair StorageCacheLinearFile Single Thread", "[runtime],[Put],[Remove],[Singlepair],[StorageCacheLinearFile][SingleThread]")
 {
     // Initialize StorageCache
     auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
@@ -129,7 +131,7 @@ TEST_CASE("Put + Remove KV Pair into StorageCacheLinearFile by Single Thread", "
 }
 
 
-TEST_CASE("Remove doesn't fail when key isn't present in StorageCacheLinearFile in Single Thread", "[runtime],[StorageCacheLinearFile][SingleThread]")
+TEST_CASE("Remove doesn't fail when key isn't present in StorageCacheLinearFile in Single Thread", "[runtime],[Remove],[Singlepair],[StorageCacheLinearFile][SingleThread]")
 {
     // Initialize StorageCache
     auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
@@ -143,7 +145,7 @@ TEST_CASE("Remove doesn't fail when key isn't present in StorageCacheLinearFile 
     REQUIRE(storageCache->size() == 0);
 }
 
-TEST_CASE("Put + Remove + Get Faillure KV Pair into StorageCacheLinearFile by Single Thread", "[runtime],[MemoryCacheMap][StorageCacheLinearFile]")
+TEST_CASE("Put + Remove + Get Faillure KV Pair StorageCacheLinearFile Single Thread", "[runtime],[Put],[Get],[Remove],[Singlepair],[StorageCacheLinearFile]")
 {
     // Initialize StorageCache
     auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
@@ -163,4 +165,179 @@ TEST_CASE("Put + Remove + Get Faillure KV Pair into StorageCacheLinearFile by Si
 
     // Get Faillure
     REQUIRE_THROWS(storageCache->get(key));
+}
+
+
+TEST_CASE("Put N + Get N KV Pair StorageCacheLinearFile Single Thread", "[runtime],[Put],[Get],[Multipair],[StorageCacheLinearFile],[SingleThread]")
+{
+
+    std::vector<size_t> numSamplesVector = {4, 10, 100, 1000};
+    for (const auto numSamples: numSamplesVector)
+    {
+
+        // Initialize StorageCache
+        auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
+        auto storagePath = KVCache::Interface::StoragePath::defaultStoragePath;
+        auto storageCache = KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath,
+                                                                                                      storageType);
+
+        // Get keys and values
+        auto [keys, values] = TestHelper::generateKVPairs(numSamples);
+
+        // Put KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(storageCache->put(keys.at(i), values.at(i)));
+            REQUIRE(storageCache->size() == i + 1);
+        }
+
+        // Get KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(storageCache->get(keys.at(i)));
+            REQUIRE(storageCache->size() == numSamples);
+            auto [keyRead, valueRead] = storageCache->get(keys.at(i));
+            REQUIRE(keyRead == keys.at(i));
+            REQUIRE(valueRead == values.at(i));
+        }
+    }
+}
+
+TEST_CASE("Put N + Get N + Update N/2 KV Pair StorageCacheLinearFile Single Thread", "[runtime],[Put],[Get],[Multipair],[StorageCacheLinearFile],[SingleThread]")
+{
+
+    std::vector<size_t> numSamplesVector = {4, 10, 100, 1000};
+    for (const auto numSamples: numSamplesVector)
+    {
+
+        // Initialize StorageCache
+        auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
+        auto storagePath = KVCache::Interface::StoragePath::defaultStoragePath;
+        auto storageCache = KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath,
+                                                                                                      storageType);
+
+        // Get keys and values
+        auto [keys, values] = TestHelper::generateKVPairs(numSamples);
+
+        // Put KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(storageCache->put(keys.at(i), values.at(i)));
+            REQUIRE(storageCache->size() == i + 1);
+        }
+
+        // Get KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(storageCache->get(keys.at(i)));
+            REQUIRE(storageCache->size() == numSamples);
+            auto [keyRead, valueRead] = storageCache->get(keys.at(i));
+            REQUIRE(keyRead == keys.at(i));
+            REQUIRE(valueRead == values.at(i));
+        }
+
+        // Update Odd KV Pairs with previous value
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            if (i % 2 != 0)   // Odd => Update
+            {
+                REQUIRE_NOTHROW(storageCache->put(keys.at(i), values.at(i - 1)));
+                REQUIRE(storageCache->size() == numSamples);
+            }
+        }
+
+        // Get KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(storageCache->get(keys.at(i)));
+            REQUIRE(storageCache->size() == numSamples);
+            auto [keyRead, valueRead] = storageCache->get(keys.at(i));
+            REQUIRE(keyRead == keys.at(i));
+            if (i % 2 != 0)   // Odd => was Updated with previous value
+            {
+                REQUIRE(valueRead == values.at(i - 1));
+            }
+            else
+            {
+                REQUIRE(valueRead == values.at(i));
+            }
+        }
+    }
+}
+
+TEST_CASE("Put N + Remove N StorageCacheLinearFile Single Thread", "[runtime],[Put],[Remove],[Multipairs],[StorageCacheLinearFile],[SingleThread]")
+{
+
+    std::vector<size_t> numSamplesVector = {4, 10, 100, 1000};
+    for (const auto numSamples: numSamplesVector)
+    {
+
+        // Initialize StorageCache
+        auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
+        auto storagePath = KVCache::Interface::StoragePath::defaultStoragePath;
+        auto storageCache = KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath,
+                                                                                                      storageType);
+
+        // Get keys and values
+        auto [keys, values] = TestHelper::generateKVPairs(numSamples);
+
+        // Put KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(storageCache->put(keys.at(i), values.at(i)));
+            REQUIRE(storageCache->size() == i + 1);
+        }
+
+        // Remove KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(storageCache->remove(keys.at(i)));
+            REQUIRE(storageCache->size() == numSamples - i - 1);
+        }
+    }
+}
+
+TEST_CASE("Put N + Get Odds + Remove Even StorageCacheLinearFile Single Thread", "[runtime],[Put],[Get],[Remove],[Multipair],[StorageCacheLinearFile],[SingleThread]")
+{
+
+    std::vector<size_t> numSamplesVector = {4, 10, 100, 1000};
+    for (const auto numSamples: numSamplesVector)
+    {
+
+        // Initialize StorageCache
+        auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
+        auto storagePath = KVCache::Interface::StoragePath::defaultStoragePath;
+        auto storageCache = KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath,
+                                                                                                      storageType);
+
+        // Get keys and values
+        auto [keys, values] = TestHelper::generateKVPairs(numSamples);
+
+        // Put KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(storageCache->put(keys.at(i), values.at(i)));
+            REQUIRE(storageCache->size() == i + 1);
+        }
+
+        // Get Odd KV Pairs and Remove Even KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            const auto currentSize = storageCache->size();
+            if (i % 2 == 0)   // Even => Remove
+            {
+
+                REQUIRE_NOTHROW(storageCache->remove(keys.at(i)));
+                REQUIRE(storageCache->size() == currentSize - 1);
+            }
+            else   // Odd => Get
+            {
+                REQUIRE_NOTHROW(storageCache->get(keys.at(i)));
+                REQUIRE(storageCache->size() == currentSize);
+                auto [keyRead, valueRead] = storageCache->get(keys.at(i));
+                REQUIRE(keyRead == keys.at(i));
+                REQUIRE(valueRead == values.at(i));
+            }
+        }
+    }
 }

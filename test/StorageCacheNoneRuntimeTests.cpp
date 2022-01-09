@@ -2,7 +2,7 @@
 #include <catch2/catch.hpp>
 
 
-TEST_CASE("Put 1 KV Pair into StorageCacheNone", "[runtime],[StorageCacheNone][SingleThread]")
+TEST_CASE("Put 1 KV Pair into StorageCacheNone", "[runtime],[Put],[Singlepair],[StorageCacheNone][SingleThread]")
 {
 
     // Initialize StorageCache
@@ -18,7 +18,7 @@ TEST_CASE("Put 1 KV Pair into StorageCacheNone", "[runtime],[StorageCacheNone][S
     REQUIRE(storageCache->size() == 0);
 }
 
-TEST_CASE("Put 2 KV Pairs into StorageCacheNone", "[runtime],[StorageCacheNone][SingleThread]")
+TEST_CASE("Put 2 KV Pairs into StorageCacheNone", "[runtime],[Put],[Multipair],[StorageCacheNone][SingleThread]")
 {
 
     // Initialize StorageCache
@@ -40,7 +40,7 @@ TEST_CASE("Put 2 KV Pairs into StorageCacheNone", "[runtime],[StorageCacheNone][
     REQUIRE(storageCache->size() == 0);
 }
 
-TEST_CASE("Get Always throws with StorageCacheNone", "[runtime],[StorageCacheNone][SingleThread]")
+TEST_CASE("Get Always throws with StorageCacheNone", "[runtime],[Put],[Get],[Singlepair],[StorageCacheNone][SingleThread]")
 {
 
     // Initialize StorageCache
@@ -60,7 +60,7 @@ TEST_CASE("Get Always throws with StorageCacheNone", "[runtime],[StorageCacheNon
     REQUIRE_THROWS(storageCache->get(key));
 }
 
-TEST_CASE("Remove Doesn't Throw with StorageCacheNone by Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")
+TEST_CASE("Remove Doesn't Throw with StorageCacheNone Single Thread", "[runtime],[Put],[Remove],[Singlepair],[MemoryCacheMap][SingleThread]")
 {
     // Initialize StorageCache
     auto storageType = KVCache::Interface::StorageCacheType::NONE;

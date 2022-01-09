@@ -1,10 +1,17 @@
 #include "KVCacheImpl.h"
 #include "../MemoryCache/AbstractMemoryCache.h"
 #include "spdlog/sinks/basic_file_sink.h"   // support for basic file logging
+#include "spdlog/spdlog.h"
 
 KVCache::Internal::KVCacheImpl::KVCacheImpl()
 {
-    m_logger = spdlog::basic_logger_mt("KVCacheImpl", "logs/KVCacheImpl.log");
+    const std::string loggerName = "KVCacheImpl";
+    m_logger = spdlog::get(loggerName);
+    if (!m_logger)
+    {
+        m_logger = spdlog::basic_logger_mt(loggerName, "logs/KVCacheImpl.log");
+    }
+
     m_logger->info("KVCacheImpl Constructor Starting Up");
     m_logger->info("KVCacheImpl Constructor is using default KV Optional Parameters");
     Interface::KVOptionalParameters defaultOptionalParams{Interface::SizeConstraint::MAXSIZE_1_MB,

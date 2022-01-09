@@ -1,12 +1,13 @@
 #include "KVCache/MemoryCache/MemoryCacheMap.h"
+#include "testHelpers.h"
 #include <catch2/catch.hpp>
 
 
-TEST_CASE("Put 1 KV Pair into MemoryCacheMap by Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")
+TEST_CASE("Put 1 KV Pair into MemoryCacheMap Single Thread", "[runtime],[Put],[Singlepair],[MemoryCacheMap][SingleThread]")
 {
 
     // Initialize MemCache
-    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_1_MB;
+    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
     auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
@@ -20,10 +21,10 @@ TEST_CASE("Put 1 KV Pair into MemoryCacheMap by Single Thread", "[runtime],[Memo
     REQUIRE(memCache->size() == 1);
 }
 
-TEST_CASE("Put 2 KV Pairs into MemoryCacheMap by Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")
+TEST_CASE("Put 2 KV Pairs into MemoryCacheMap Single Thread", "[runtime],[Put],[Multipair],[MemoryCacheMap][SingleThread]")
 {
     // Initialize MemCache
-    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_1_MB;
+    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
     auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
@@ -42,10 +43,10 @@ TEST_CASE("Put 2 KV Pairs into MemoryCacheMap by Single Thread", "[runtime],[Mem
     REQUIRE(memCache->size() == 2);
 }
 
-TEST_CASE("Put + Get KV Pair into MemoryCacheMap by Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")
+TEST_CASE("Put + Get KV Pair into MemoryCacheMap Single Thread", "[runtime],[Put],[Get],[Singlepair],[MemoryCacheMap][SingleThread]")
 {
     // Initialize MemCache
-    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_1_MB;
+    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
     auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
@@ -65,10 +66,10 @@ TEST_CASE("Put + Get KV Pair into MemoryCacheMap by Single Thread", "[runtime],[
     REQUIRE(valueRead == value);
 }
 
-TEST_CASE("Put + Get + Update KV Pair into MemoryCacheMap by Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")
+TEST_CASE("Put + Get + Update KV Pair into MemoryCacheMap Single Thread", "[runtime],[Put],[Get],[Singlepair],[MemoryCacheMap][SingleThread]")
 {
     // Initialize MemCache
-    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_1_MB;
+    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
     auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
@@ -98,10 +99,10 @@ TEST_CASE("Put + Get + Update KV Pair into MemoryCacheMap by Single Thread", "[r
     REQUIRE(valueRead2 == newValue);
 }
 
-TEST_CASE("Get Remove Faillure on Empty MemoryCacheMap by Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")
+TEST_CASE("Get Remove Faillure on Empty MemoryCacheMap Single Thread", "[runtime],[Remove],[Singlepair],[MemoryCacheMap][SingleThread]")
 {
     // Initialize MemCache
-    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_1_MB;
+    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
     auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
@@ -113,10 +114,10 @@ TEST_CASE("Get Remove Faillure on Empty MemoryCacheMap by Single Thread", "[runt
     REQUIRE_THROWS(memCache->get(key));
 }
 
-TEST_CASE("Put + Remove KV Pair into MemoryCacheMap by Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")
+TEST_CASE("Put + Remove KV Pair into MemoryCacheMap Single Thread", "[runtime],[Put],[Remove],[Singlepair],[MemoryCacheMap][SingleThread]")
 {
     // Initialize MemCache
-    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_1_MB;
+    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
     auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
@@ -138,10 +139,10 @@ TEST_CASE("Put + Remove KV Pair into MemoryCacheMap by Single Thread", "[runtime
 }
 
 
-TEST_CASE("Remove doesn't fail when key isn't present in Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")
+TEST_CASE("Remove doesn't fail when key isn't present in Single Thread", "[runtime],[Remove],[Singlepair],[MemoryCacheMap][SingleThread]")
 {
     // Initialize MemCache
-    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_1_MB;
+    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
     auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
@@ -154,10 +155,10 @@ TEST_CASE("Remove doesn't fail when key isn't present in Single Thread", "[runti
     REQUIRE(memCache->size() == 0);
 }
 
-TEST_CASE("Put + Remove + Get Faillure KV Pair into MemoryCacheMap by Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")
+TEST_CASE("Put + Remove + Get Faillure KV Pair into MemoryCacheMap Single Thread", "[runtime],[Put],[Get],[Remove],[Singlepair],[MemoryCacheMap][SingleThread]")
 {
     // Initialize MemCache
-    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_1_MB;
+    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
     auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
@@ -176,4 +177,187 @@ TEST_CASE("Put + Remove + Get Faillure KV Pair into MemoryCacheMap by Single Thr
 
     // Get Faillure
     REQUIRE_THROWS(memCache->get(key));
+}
+
+
+TEST_CASE("Put N + Get N KV Pair MemoryCacheMap Single Thread", "[runtime],[Put],[Get],[Multipair],[MemoryCacheMap],[SingleThread]")
+{
+
+    std::vector<size_t> numSamplesVector = {4, 10, 100, 1000};
+    for (const auto numSamples: numSamplesVector)
+    {
+
+        // Initialize MemCache
+        auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
+        auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
+        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+        auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
+                                                                                               memType,
+                                                                                               evictionStrategy);
+
+        // Get keys and values
+        auto [keys, values] = TestHelper::generateKVPairs(numSamples);
+
+        // Put KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(memCache->put(keys.at(i), values.at(i)));
+            REQUIRE(memCache->size() == i + 1);
+        }
+
+        // Get KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(memCache->get(keys.at(i)));
+            REQUIRE(memCache->size() == numSamples);
+            auto [keyRead, valueRead] = memCache->get(keys.at(i));
+            REQUIRE(keyRead == keys.at(i));
+            REQUIRE(valueRead == values.at(i));
+        }
+    }
+}
+
+TEST_CASE("Put N + Get N + Update N/2 KV Pair MemoryCacheMap Single Thread", "[runtime],[Put],[Get],[Multipair],[MemoryCacheMap],[SingleThread]")
+{
+
+    std::vector<size_t> numSamplesVector = {4, 10, 100, 1000};
+    for (const auto numSamples: numSamplesVector)
+    {
+
+        // Initialize MemCache
+        auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
+        auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
+        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+        auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
+                                                                                               memType,
+                                                                                               evictionStrategy);
+
+        // Get keys and values
+        auto [keys, values] = TestHelper::generateKVPairs(numSamples);
+
+        // Put KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(memCache->put(keys.at(i), values.at(i)));
+            REQUIRE(memCache->size() == i + 1);
+        }
+
+        // Get KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(memCache->get(keys.at(i)));
+            REQUIRE(memCache->size() == numSamples);
+            auto [keyRead, valueRead] = memCache->get(keys.at(i));
+            REQUIRE(keyRead == keys.at(i));
+            REQUIRE(valueRead == values.at(i));
+        }
+
+        // Update Odd KV Pairs with previous value
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            if (i % 2 != 0)   // Odd => Update
+            {
+                REQUIRE_NOTHROW(memCache->put(keys.at(i), values.at(i - 1)));
+                REQUIRE(memCache->size() == numSamples);
+            }
+        }
+
+        // Get KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(memCache->get(keys.at(i)));
+            REQUIRE(memCache->size() == numSamples);
+            auto [keyRead, valueRead] = memCache->get(keys.at(i));
+            REQUIRE(keyRead == keys.at(i));
+            if (i % 2 != 0)   // Odd => was Updated with previous value
+            {
+                REQUIRE(valueRead == values.at(i - 1));
+            }
+            else
+            {
+                REQUIRE(valueRead == values.at(i));
+            }
+        }
+    }
+}
+
+TEST_CASE("Put N + Remove N MemoryCacheMap Single Thread", "[runtime],[Put],[Remove],[Multipairs],[MemoryCacheMap],[SingleThread]")
+{
+
+    std::vector<size_t> numSamplesVector = {4, 10, 100, 1000};
+    for (const auto numSamples: numSamplesVector)
+    {
+
+        // Initialize MemCache
+        auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
+        auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
+        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+        auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
+                                                                                               memType,
+                                                                                               evictionStrategy);
+
+        // Get keys and values
+        auto [keys, values] = TestHelper::generateKVPairs(numSamples);
+
+        // Put KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(memCache->put(keys.at(i), values.at(i)));
+            REQUIRE(memCache->size() == i + 1);
+        }
+
+        // Remove KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(memCache->remove(keys.at(i)));
+            REQUIRE(memCache->size() == numSamples - i - 1);
+        }
+    }
+}
+
+TEST_CASE("Put N + Get Odds + Remove Even MemoryCacheMap Single Thread", "[runtime],[Put],[Get],[Remove],[Multipair],[MemoryCacheMap],[SingleThread]")
+{
+
+    std::vector<size_t> numSamplesVector = {4, 10, 100, 1000};
+    for (const auto numSamples: numSamplesVector)
+    {
+
+        // Initialize MemCache
+        auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
+        auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
+        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+        auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
+                                                                                               memType,
+                                                                                               evictionStrategy);
+
+        // Get keys and values
+        auto [keys, values] = TestHelper::generateKVPairs(numSamples);
+
+        // Put KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            REQUIRE_NOTHROW(memCache->put(keys.at(i), values.at(i)));
+            REQUIRE(memCache->size() == i + 1);
+        }
+
+        // Get Odd KV Pairs and Remove Even KV Pairs
+        for (size_t i = 0; i < numSamples; i++)
+        {
+            const auto currentSize = memCache->size();
+            if (i % 2 == 0)   // Even => Remove
+            {
+
+                REQUIRE_NOTHROW(memCache->remove(keys.at(i)));
+                REQUIRE(memCache->size() == currentSize - 1);
+            }
+            else   // Odd => Get
+            {
+                REQUIRE_NOTHROW(memCache->get(keys.at(i)));
+                REQUIRE(memCache->size() == currentSize);
+                auto [keyRead, valueRead] = memCache->get(keys.at(i));
+                REQUIRE(keyRead == keys.at(i));
+                REQUIRE(valueRead == values.at(i));
+            }
+        }
+    }
 }

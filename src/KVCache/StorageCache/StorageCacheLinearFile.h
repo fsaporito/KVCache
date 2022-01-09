@@ -18,7 +18,8 @@ namespace KVCache
              * The file will be written in the following format:
              * Line N: Key
              * Line N+1: Value
-             * Line N+2: Empty Line
+             * Line N+2: Other Key
+             * Line N+3: Other Value
              */
             class StorageCacheLinearFile: public AbstractStorageCache
             {

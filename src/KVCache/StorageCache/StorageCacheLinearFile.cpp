@@ -26,54 +26,44 @@ void StorageCacheLinearFile::put(const std::string& key, const std::string& valu
     const std::string pathBkp = m_storagePath + "__bkp.temp";
     std::ofstream ostreamBkp{pathBkp};
 
-    bool updateValue = false;
     bool valueWasAlreadyUpdated = false;
-    bool nextValueIsKey = true;
 
-    for (std::string line; std::getline(pathStream, line);)
+    for (std::string readKey; std::getline(pathStream, readKey);)
     {
+
+        // Ignore Empty Lines
+        if (readKey.empty() || readKey == "\n")
+        {
+            continue;
+        }
+
+        // Read the value
+        std::string readValue;
+        std::getline(pathStream, readValue);
 
         // Value was already found and updated, just copy over the read data
         if (valueWasAlreadyUpdated)
         {
-            ostreamBkp << line << "\n";
+            ostreamBkp << readKey << "\n"
+                       << readValue << "\n";
             continue;
         }
 
-        // Next line is a key or an empty line
-        if (line == "\n")
-        {
-            ostreamBkp << "\n";
-            nextValueIsKey = true;
-            continue;
-        }
+        // Copy the key
+        ostreamBkp << readKey << "\n";
 
-        // Analize the Key
-        if (nextValueIsKey)
-        {
-            ostreamBkp << key << "\n";
-            nextValueIsKey = false;
-            if (key == line)   // Key Was Found
-            {
-                updateValue = true;
-            }
-            continue;
-        }
-
-        // Update the value if it was found by the previous iteration (Size remains the same)
-        if (updateValue)
+        // If Key was found, update the value, otherwise just copy the old one
+        if (key == readKey)
         {
             m_logger->info("StorageCacheLinearFile::put() key={} is present, value will be updated", key);
             ostreamBkp << value << "\n";
-            updateValue = false;
             valueWasAlreadyUpdated = true;
-            m_currentByteSize -= line.size();
-            constexpr size_t NUMBER_OF_INTRODUCED_NEW_LINES = 1;
-            m_currentByteSize += (value.size() + NUMBER_OF_INTRODUCED_NEW_LINES * NUMBER_OF_CHARACTERS_IN_NEW_LINE) * sizeof(char);
+            m_currentByteSize -= readValue.size();
+            m_currentByteSize += (value.size()) * sizeof(char);
         }
-        else   // Value is not the correct one, keep the old one
+        else
         {
-            ostreamBkp << line << "\n";
+            ostreamBkp << readValue + "\n";
         }
     }
 
@@ -81,10 +71,18 @@ void StorageCacheLinearFile::put(const std::string& key, const std::string& valu
     if (!valueWasAlreadyUpdated)
     {
         m_logger->info("StorageCacheLinearFile::put() key={} isn't present, value will be added", key);
-        ostreamBkp << key << "\n"
-                   << value << "\n"
-                   << "\n";
-        constexpr size_t NUMBER_OF_INTRODUCED_NEW_LINES = 3;
+        if (m_currentSize == 0)   // Add Directly the KV Pair without a new line
+        {
+            ostreamBkp << key << "\n"
+                       << value << "\n";
+        }
+        else   // Add a new line before the KV Pair
+        {
+            ostreamBkp << "\n"
+                       << key << "\n"
+                       << value;
+        }
+        constexpr size_t NUMBER_OF_INTRODUCED_NEW_LINES = 1;
         m_currentByteSize += (key.size() + value.size() + NUMBER_OF_INTRODUCED_NEW_LINES * NUMBER_OF_CHARACTERS_IN_NEW_LINE) * sizeof(char);
         m_currentSize += 1;
     }
@@ -109,57 +107,40 @@ void StorageCacheLinearFile::remove(const std::string& key)
     const std::string pathBkp = m_storagePath + "__bkp.temp";
     std::ofstream ostreamBkp{pathBkp};
 
-    size_t skipLines = 0;
-    bool nextValueIsKey = true;
     bool valueWasAlreadyRemoved = false;
 
-    for (std::string line; std::getline(pathStream, line);)
+    for (std::string readKey; std::getline(pathStream, readKey);)
     {
-        // Skip Current Line
-        if (skipLines > 0)
+
+        // Ignore Empty Lines
+        if (readKey.empty() || readKey == "\n")
         {
-            skipLines--;
             continue;
         }
+
+        // Read the value
+        std::string readValue;
+        std::getline(pathStream, readValue);
 
         // Value was already found and removed, just copy over the read data
         if (valueWasAlreadyRemoved)
         {
-            ostreamBkp << line << "\n";
+            ostreamBkp << readKey << "\n"
+                       << readValue << "\n";
             continue;
         }
 
-        // Next line is a key or an empty line
-        if (line == "\n")
+        // If Key was found, remove key and value, otherwise just copy the old ones
+        if (key == readKey)   // Key Was Found
         {
-            ostreamBkp << "\n";
-            nextValueIsKey = true;
-            continue;
-        }
-
-        // Analize the Key
-        if (nextValueIsKey)
-        {
-            nextValueIsKey = false;
-            if (key == line)   // Key Was Found
-            {
-                skipLines = 2;
-                std::string value;
-                std::getline(pathStream, value);
-                m_currentByteSize -= line.size();
-                constexpr size_t NUMBER_OF_NEW_LINES = 3;
-                m_currentByteSize += (key.size() + value.size() + NUMBER_OF_NEW_LINES * NUMBER_OF_CHARACTERS_IN_NEW_LINE) * sizeof(char);
-                m_currentSize -= 1;
-                valueWasAlreadyRemoved = true;
-            }
-            else
-            {
-                ostreamBkp << line;
-            }
+            m_currentByteSize -= readKey.size() + readValue.size();
+            m_currentSize -= 1;
+            valueWasAlreadyRemoved = true;
         }
         else
         {
-            ostreamBkp << line;
+            ostreamBkp << readKey << "\n"
+                       << readValue << "\n";
         }
     }
 
@@ -173,40 +154,24 @@ std::pair<std::string, std::string> StorageCacheLinearFile::get(const std::strin
 {
     std::lock_guard<std::mutex> guard(m_fileMutex);
     std::ifstream pathStream{m_storagePath};
-    bool nextValueIsKey = true;
-    size_t skipLines = 0;
-    for (std::string line; std::getline(pathStream, line);)
+    for (std::string readKey; std::getline(pathStream, readKey);)
     {
-        // Skip Current Line
-        if (skipLines > 0)
+
+        // Ignore Empty Lines
+        if (readKey.empty() || readKey == "\n")
         {
-            skipLines--;
             continue;
         }
 
-        // Next line is a key or an empty line
-        if (line == "\n")
-        {
-            nextValueIsKey = true;
-            continue;
-        }
+        // Read the value
+        std::string value;
+        std::getline(pathStream, value);
 
-        // Analize the Key
-        if (nextValueIsKey)
+        // If the key was found, return, otherwise continue
+        if (key == readKey)   // Key Was Found
         {
-            nextValueIsKey = false;
-            if (key == line)   // Key Was Found
-            {
-                std::string value;
-                std::getline(pathStream, value);
-                m_logger->info("StorageCacheLinearFile::get() found key={}", key);
-                return std::make_pair(key, value);
-            }
-            else   // Key not found, skip next value and empty line
-            {
-                skipLines = 2;
-            }
-            continue;
+            m_logger->info("StorageCacheLinearFile::get() found key={}", key);
+            return std::make_pair(key, value);
         }
     }
     m_logger->error("StorageCacheLinearFile::get() failed for key={}", key);

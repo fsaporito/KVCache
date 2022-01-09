@@ -1,0 +1,5 @@
+---
+Checks:          '*,-altera*,clang-analyzer-*,concurrency-*,cppcoreguidelines-*,-fuchsia*,-google*,-llvm*,modernize-*,-modernize-use-trailing-return-type,-modernize-pass-by-value,performance-*,portability-*,readability-*,-readability-else-after-return'
+WarningsAsErrors: ''
+HeaderFilterRegex: ''
+FormatStyle:     none 

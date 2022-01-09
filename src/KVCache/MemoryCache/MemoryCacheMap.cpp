@@ -9,9 +9,9 @@ template<typename T>
     requires isMap<T>
         MemoryCacheMap<T>::MemoryCacheMap(const size_t maxByteSize,
                                           const Interface::CacheEvictionStrategy cacheEvictionStrategy)
-        : AbstractMemoryCache(maxByteSize, cacheEvictionStrategy)
+        : AbstractMemoryCache(maxByteSize, cacheEvictionStrategy, "logs/MemoryCacheMap.log")
     {
-        spdlog::trace("MemoryCacheMap Object Created");
+        m_logger->info("MemoryCacheMap Object Created");
     };
 
 
@@ -25,7 +25,7 @@ template<typename T>
 
             if (m_map.contains(key))
             {
-                spdlog::trace("MemoryCacheMap::put() key={} is present, value will be updated", key);
+                m_logger->info("MemoryCacheMap::put() key={} is present, value will be updated", key);
                 const size_t oldValueByteSize = m_map.at(key).size();
                 m_currentByteSize -= oldValueByteSize;
                 m_map[key] = value;
@@ -34,7 +34,7 @@ template<typename T>
             }
             else
             {
-                spdlog::trace("MemoryCacheMap::put() key={} isn't present, value will be added", key);
+                m_logger->info("MemoryCacheMap::put() key={} isn't present, value will be added", key);
                 const auto kvPair = std::make_pair(key, value);
                 m_map.insert(kvPair);
                 const size_t newKeyByteSize = key.size();
@@ -42,7 +42,7 @@ template<typename T>
                 m_currentByteSize += newKeyByteSize + newValueByteSize;
             }
 
-            spdlog::trace("MemoryCacheMap::put() completed for key={}, new bytesize=", key, m_currentByteSize);
+            m_logger->info("MemoryCacheMap::put() completed for key={}, new bytesize=", key, m_currentByteSize);
 
             return removedElements;
         }
@@ -54,11 +54,11 @@ template<typename T>
         std::lock_guard<std::mutex> guard(m_mapMutex);
         if (m_map.contains(key))
         {
-            spdlog::trace("MemoryCacheMap::remove() remove key={}", key);
+            m_logger->info("MemoryCacheMap::remove() remove key={}", key);
             const size_t oldValueByteSize = m_map.at(key).size();
             m_map.erase(key);
             m_currentByteSize -= oldValueByteSize;
-            spdlog::trace("MemoryCacheMap::remove() removed key={}, new bytesize=", key, m_currentByteSize);
+            m_logger->info("MemoryCacheMap::remove() removed key={}, new bytesize=", key, m_currentByteSize);
         }
     }
 
@@ -70,12 +70,12 @@ template<typename T>
         std::lock_guard<std::mutex> guard(m_mapMutex);
         if (m_map.contains(key))
         {
-            spdlog::trace("MemoryCacheMap::get() key={}", key);
+            m_logger->info("MemoryCacheMap::get() key={}", key);
             return std::make_pair(key, m_map.at(key));
         }
         else
         {
-            spdlog::trace("MemoryCacheMap::get() failed for key={}", key);
+            m_logger->info("MemoryCacheMap::get() failed for key={}", key);
             throw std::runtime_error("Didn't find element with key: " + key);
         }
     }
@@ -86,7 +86,7 @@ template<typename T>
     const
     {
         std::lock_guard<std::mutex> guard(m_mapMutex);
-        spdlog::trace("MemoryCacheMap::getByteSize() = {}", m_currentByteSize);
+        m_logger->info("MemoryCacheMap::getByteSize() = {}", m_currentByteSize);
         return m_currentByteSize;
     }
 
@@ -96,7 +96,7 @@ template<typename T>
     const
     {
         std::lock_guard<std::mutex> guard(m_mapMutex);
-        spdlog::trace("MemoryCacheMap::getByteSize() = {}", m_map.size());
+        m_logger->info("MemoryCacheMap::getByteSize() = {}", m_map.size());
         return m_map.size();
     }
 

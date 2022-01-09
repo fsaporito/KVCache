@@ -11,7 +11,10 @@ include_directories (../src)
 
 add_executable(tests KVCacheCreationTests.cpp 
                      MemoryCacheMapCreationTests.cpp
-                     MemoryCacheMapRuntimeTests.cpp)
+                     MemoryCacheMapRuntimeTests.cpp
+                     StorageCacheCreationTests.cpp
+                     StorageCacheLinearFileRuntimeTests.cpp
+                     StorageCacheNoneRuntimeTests.cpp)
 target_link_libraries(
     tests 
     PRIVATE 

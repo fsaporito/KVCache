@@ -75,5 +75,12 @@ namespace KVCache
             }
         }
 
+        namespace StoragePath
+        {
+            const std::string defaultDirectory = ".";
+            const std::string defaultPathName = ".KVCache.txt";
+            const std::string defaultStoragePath = defaultDirectory + "/" + defaultPathName;
+        }
+
     }   // namespace Interface
 }   // namespace KVCache

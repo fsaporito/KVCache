@@ -2,6 +2,7 @@
 #include "../KVCacheInterface/KVEnums.h"
 #include <cstddef>
 #include <memory>
+#include <spdlog/logger.h>
 #include <string>
 #include <vector>
 
@@ -32,9 +33,12 @@ namespace KVCache
                 Interface::CacheEvictionStrategy getCacheEvictionStrategy() const;
 
               protected:
-                AbstractMemoryCache(const size_t maxByteSize, const Interface::CacheEvictionStrategy cacheEvictionStrategy);
+                AbstractMemoryCache(const size_t maxByteSize,
+                                    const Interface::CacheEvictionStrategy cacheEvictionStrategy,
+                                    const std::string& loggerOutputPath = "logs/AbstractMemoryCache.log");
                 size_t m_maxByteSize;
                 Interface::CacheEvictionStrategy m_cacheEvictionStrategy;
+                std::shared_ptr<spdlog::logger> m_logger;
             };
         }   // namespace MemoryCache
     }   // namespace Internal

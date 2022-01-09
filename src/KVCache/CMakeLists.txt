@@ -12,7 +12,15 @@ add_library(${KVCacheLibName} STATIC
   MemoryCache/AbstractMemoryCache.cpp
   MemoryCache/AbstractMemoryCache.h
   MemoryCache/MemoryCacheMap.cpp
-  MemoryCache/MemoryCacheMap.h)
+  MemoryCache/MemoryCacheMap.h
+  StorageCache/AbstractStorageCache.cpp  
+  StorageCache/AbstractStorageCache.h
+  StorageCache/StorageCacheLinearFile.cpp  
+  StorageCache/StorageCacheLinearFile.h
+  StorageCache/StorageCacheNone.cpp  
+  StorageCache/StorageCacheNone.h  
+  StorageCache/UnknownStorageCacheTypeException.h
+)
 if(WIN32 OR MSVC OR MSYS OR MINGW) # Windows: lib extension										
 	set_target_properties(${KVCacheLibName} PROPERTIES SUFFIX ".lib")
 elseif(UNIX AND NOT(APPLE)) # Linux: so extension

@@ -59,9 +59,10 @@ TEST_CASE("Put + Get KV Pair into MemoryCacheMap by Single Thread", "[runtime],[
     REQUIRE(memCache->size() == 1);
 
     // Get KV Pair
+    REQUIRE_NOTHROW(memCache->get(key));
     auto [keyRead, valueRead] = memCache->get(key);
-    REQUIRE(keyRead.compare(key) == 0);
-    REQUIRE(valueRead.compare(value) == 0);
+    REQUIRE(keyRead == key);
+    REQUIRE(valueRead == value);
 }
 
 TEST_CASE("Put + Get + Update KV Pair into MemoryCacheMap by Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")
@@ -80,9 +81,10 @@ TEST_CASE("Put + Get + Update KV Pair into MemoryCacheMap by Single Thread", "[r
     REQUIRE(memCache->size() == 1);
 
     // Get KV Pair
+    REQUIRE_NOTHROW(memCache->get(key));
     const auto [keyRead, valueRead] = memCache->get(key);
-    REQUIRE(keyRead.compare(key) == 0);
-    REQUIRE(valueRead.compare(value) == 0);
+    REQUIRE(keyRead == key);
+    REQUIRE(valueRead == value);
 
     // Update KV Pair
     const std::string newValue = "NewTestValue";
@@ -90,9 +92,10 @@ TEST_CASE("Put + Get + Update KV Pair into MemoryCacheMap by Single Thread", "[r
     REQUIRE(memCache->size() == 1);
 
     // Get updated KV Pair
+    REQUIRE_NOTHROW(memCache->get(key));
     const auto [keyRead2, valueRead2] = memCache->get(key);
-    REQUIRE(keyRead2.compare(key) == 0);
-    REQUIRE(valueRead2.compare(newValue) == 0);
+    REQUIRE(keyRead2 == key);
+    REQUIRE(valueRead2 == newValue);
 }
 
 TEST_CASE("Get Remove Faillure on Empty MemoryCacheMap by Single Thread", "[runtime],[MemoryCacheMap][SingleThread]")

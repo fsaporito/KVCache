@@ -21,8 +21,8 @@ project(KVCache LANGUAGES CXX)
 # uncomment the options to enable them:
 project_options(
       ENABLE_CACHE
-      # ENABLE_CPPCHECK
-      # ENABLE_CLANG_TIDY
+      #ENABLE_CPPCHECK
+      #ENABLE_CLANG_TIDY
       WARNINGS_AS_ERRORS
       ENABLE_CONAN
       # ENABLE_IPO
@@ -30,7 +30,7 @@ project_options(
       # ENABLE_COVERAGE
       # ENABLE_PCH
       # PCH_HEADERS
-      # ENABLE_DOXYGEN
+      ENABLE_DOXYGEN
       # ENABLE_USER_LINKER
       # ENABLE_BUILD_WITH_TIME_TRACE
       # ENABLE_UNITY

@@ -29,8 +29,8 @@ namespace KVCache
             KVCacheImpl& operator=(KVCacheImpl const&) = delete;
 
             void put(const std::string& key, const std::string& value) override;
-            void remove(const std::string& key) override;
-            std::pair<std::string, std::string> get(const std::string& key) const override;
+            bool remove(const std::string& key) override;
+            std::optional<std::pair<std::string, std::string>> get(const std::string& key) const override;
 
           protected:
             void setupKVCache(const Interface::KVOptionalParameters& optionalParams);

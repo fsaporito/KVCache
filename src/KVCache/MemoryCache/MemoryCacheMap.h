@@ -41,19 +41,20 @@ namespace KVCache
 
                 /*!
                  * Removes KV pair from the cache.
-                 * If the pair isn't present in the cache, this method wont' do anything.
+                 * If the pair is present in the cache, it will be removed and the method will return true.
+                 * If the pair isn't present in the cache, this method won't do anything and return false.
                  * This method will automatically update the bytesize of the KVCache.
                  * This method is thread-safe regarding access to the underline data.
                  */
-                void remove(const std::string& key) override;
+                bool remove(const std::string& key) override;
 
                 /*!
                  * Get a KV pair from the cache.
-                 * If the pair isn't present in the cache, this method will throw an exception.
+                 * If the pair isn't present in the cache, this method return an empty optional.
                  * This method won't change the underlying data.
                  * This method is thread-safe regarding access to the underline data.
                  */
-                std::pair<std::string, std::string> get(const std::string& key) const override;
+                std::optional<std::pair<std::string, std::string>> get(const std::string& key) const override;
 
                 /*!
                  * Returns the bytesize of the KVCache.

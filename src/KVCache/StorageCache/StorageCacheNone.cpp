@@ -18,16 +18,17 @@ void StorageCacheNone::put(const std::string& key, const std::string& value)
 }
 
 
-void StorageCacheNone::remove(const std::string& key)
+bool StorageCacheNone::remove(const std::string& key)
 {
     spdlog::trace("StorageCacheNone::remove() remove key={}", key);
+    return false;
 }
 
 
-std::pair<std::string, std::string> StorageCacheNone::get(const std::string& key) const
+std::optional<std::pair<std::string, std::string>> StorageCacheNone::get(const std::string& key) const
 {
     spdlog::trace("StorageCacheNone::get() failed for key={}", key);
-    throw std::runtime_error("Didn't find element with key: " + key);
+    return {};
 }
 
 

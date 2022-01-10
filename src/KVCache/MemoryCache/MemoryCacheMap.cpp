@@ -49,22 +49,27 @@ template<typename T>
 
     template<typename T>
         requires isMap<T>
-    void MemoryCacheMap<T>::remove(const std::string& key)
+    bool MemoryCacheMap<T>::remove(const std::string& key)
     {
         std::lock_guard<std::mutex> guard(m_mapMutex);
-        if (m_map.contains(key))
+
+        if (!m_map.contains(key))
         {
-            m_logger->info("MemoryCacheMap::remove() remove key={}", key);
-            const size_t oldValueByteSize = m_map.at(key).size();
-            m_map.erase(key);
-            m_currentByteSize -= oldValueByteSize;
-            m_logger->info("MemoryCacheMap::remove() removed key={}, new bytesize=", key, m_currentByteSize);
+            return false;
         }
+
+        m_logger->info("MemoryCacheMap::remove() remove key={}", key);
+        const size_t oldValueByteSize = m_map.at(key).size();
+        m_map.erase(key);
+        m_currentByteSize -= oldValueByteSize;
+        m_logger->info("MemoryCacheMap::remove() removed key={}, new bytesize=", key, m_currentByteSize);
+
+        return true;
     }
 
     template<typename T>
         requires isMap<T>
-            std::pair<std::string, std::string> MemoryCacheMap<T>::get(const std::string& key)
+            std::optional<std::pair<std::string, std::string>> MemoryCacheMap<T>::get(const std::string& key)
     const
     {
         std::lock_guard<std::mutex> guard(m_mapMutex);
@@ -76,7 +81,7 @@ template<typename T>
         else
         {
             m_logger->info("MemoryCacheMap::get() failed for key={}", key);
-            throw std::runtime_error("Didn't find element with key: " + key);
+            return {};
         }
     }
 

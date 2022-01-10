@@ -25,14 +25,14 @@ namespace KVCache
                 void put(const std::string& key, const std::string& value) override;
 
                 /*!
-                 * Do nothing since the cache is null
+                 * Do nothing since the cache is null. It will ALWAYS return false
                  */
-                void remove(const std::string& key) override;
+                bool remove(const std::string& key) override;
 
                 /*!
-                 * Always throws since the KV Pair can never be found in the null cache
+                 * Always returns empty optional since the KV Pair can never be found in the null cache
                  */
-                std::pair<std::string, std::string> get(const std::string& key) const override;
+                std::optional<std::pair<std::string, std::string>> get(const std::string& key) const override;
 
                 /*!
                  * Returns the bytesize of the KVCache, which is always 0 for the null cache.

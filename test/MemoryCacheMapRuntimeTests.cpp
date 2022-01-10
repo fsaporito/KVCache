@@ -61,7 +61,10 @@ TEST_CASE("Put + Get KV Pair into MemoryCacheMap Single Thread", "[runtime],[Put
 
     // Get KV Pair
     REQUIRE_NOTHROW(memCache->get(key));
-    auto [keyRead, valueRead] = memCache->get(key);
+    auto optionalPair = memCache->get(key);
+    REQUIRE(optionalPair.has_value());
+    const auto& keyRead = optionalPair.value().first;
+    const auto& valueRead = optionalPair.value().second;
     REQUIRE(keyRead == key);
     REQUIRE(valueRead == value);
 }
@@ -83,7 +86,10 @@ TEST_CASE("Put + Get + Update KV Pair into MemoryCacheMap Single Thread", "[runt
 
     // Get KV Pair
     REQUIRE_NOTHROW(memCache->get(key));
-    const auto [keyRead, valueRead] = memCache->get(key);
+    auto optionalPair = memCache->get(key);
+    REQUIRE(optionalPair.has_value());
+    const auto& keyRead = optionalPair.value().first;
+    const auto& valueRead = optionalPair.value().second;
     REQUIRE(keyRead == key);
     REQUIRE(valueRead == value);
 
@@ -94,12 +100,15 @@ TEST_CASE("Put + Get + Update KV Pair into MemoryCacheMap Single Thread", "[runt
 
     // Get updated KV Pair
     REQUIRE_NOTHROW(memCache->get(key));
-    const auto [keyRead2, valueRead2] = memCache->get(key);
+    auto optionalPair2 = memCache->get(key);
+    REQUIRE(optionalPair2.has_value());
+    const auto& keyRead2 = optionalPair2.value().first;
+    const auto& valueRead2 = optionalPair2.value().second;
     REQUIRE(keyRead2 == key);
     REQUIRE(valueRead2 == newValue);
 }
 
-TEST_CASE("Get Remove Faillure on Empty MemoryCacheMap Single Thread", "[runtime],[Remove],[Singlepair],[MemoryCacheMap][SingleThread]")
+TEST_CASE("Get Faillure on Empty MemoryCacheMap Single Thread", "[runtime],[Get],[Singlepair],[MemoryCacheMap][SingleThread]")
 {
     // Initialize MemCache
     auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
@@ -111,7 +120,9 @@ TEST_CASE("Get Remove Faillure on Empty MemoryCacheMap Single Thread", "[runtime
 
     // Get Faillure
     const std::string key = "TestKey";
-    REQUIRE_THROWS(memCache->get(key));
+    REQUIRE_NOTHROW(memCache->get(key));
+    auto optionalPair = memCache->get(key);
+    REQUIRE(!optionalPair.has_value());
 }
 
 TEST_CASE("Put + Remove KV Pair into MemoryCacheMap Single Thread", "[runtime],[Put],[Remove],[Singlepair],[MemoryCacheMap][SingleThread]")
@@ -131,11 +142,15 @@ TEST_CASE("Put + Remove KV Pair into MemoryCacheMap Single Thread", "[runtime],[
     REQUIRE(memCache->size() == 1);
 
     // Remove KV Pair
-    REQUIRE_NOTHROW(memCache->remove(key));
+    bool removeFlag = false;
+    REQUIRE_NOTHROW(removeFlag = memCache->remove(key));
+    REQUIRE(removeFlag);
     REQUIRE(memCache->size() == 0);
 
     // Get KV Pair
-    REQUIRE_THROWS(memCache->get(key));
+    REQUIRE_NOTHROW(memCache->get(key));
+    auto optionalPair = memCache->get(key);
+    REQUIRE(!optionalPair.has_value());
 }
 
 
@@ -151,7 +166,9 @@ TEST_CASE("Remove doesn't fail when key isn't present in Single Thread", "[runti
 
     // Remove KV Pair
     const std::string key = "TestKey";
-    REQUIRE_NOTHROW(memCache->remove(key));
+    bool removeFlag = false;
+    REQUIRE_NOTHROW(removeFlag = memCache->remove(key));
+    REQUIRE(!removeFlag);
     REQUIRE(memCache->size() == 0);
 }
 
@@ -172,11 +189,15 @@ TEST_CASE("Put + Remove + Get Faillure KV Pair into MemoryCacheMap Single Thread
     REQUIRE(memCache->size() == 1);
 
     // Remove KV Pair
-    REQUIRE_NOTHROW(memCache->remove(key));
+    bool removeFlag = false;
+    REQUIRE_NOTHROW(removeFlag = memCache->remove(key));
+    REQUIRE(removeFlag);
     REQUIRE(memCache->size() == 0);
 
     // Get Faillure
-    REQUIRE_THROWS(memCache->get(key));
+    REQUIRE_NOTHROW(memCache->get(key));
+    auto optionalPair = memCache->get(key);
+    REQUIRE(!optionalPair.has_value());
 }
 
 
@@ -195,7 +216,7 @@ TEST_CASE("Put N + Get N KV Pair MemoryCacheMap Single Thread", "[runtime],[Put]
                                                                                                memType,
                                                                                                evictionStrategy);
 
-        // Get keys and values
+        // Generate keys and values
         auto [keys, values] = TestHelper::generateKVPairs(numSamples);
 
         // Put KV Pairs
@@ -210,7 +231,10 @@ TEST_CASE("Put N + Get N KV Pair MemoryCacheMap Single Thread", "[runtime],[Put]
         {
             REQUIRE_NOTHROW(memCache->get(keys.at(i)));
             REQUIRE(memCache->size() == numSamples);
-            auto [keyRead, valueRead] = memCache->get(keys.at(i));
+            auto optionalPair = memCache->get(keys.at(i));
+            REQUIRE(optionalPair.has_value());
+            const auto& keyRead = optionalPair.value().first;
+            const auto& valueRead = optionalPair.value().second;
             REQUIRE(keyRead == keys.at(i));
             REQUIRE(valueRead == values.at(i));
         }
@@ -232,7 +256,7 @@ TEST_CASE("Put N + Get N + Update N/2 KV Pair MemoryCacheMap Single Thread", "[r
                                                                                                memType,
                                                                                                evictionStrategy);
 
-        // Get keys and values
+        // Generate keys and values
         auto [keys, values] = TestHelper::generateKVPairs(numSamples);
 
         // Put KV Pairs
@@ -247,7 +271,10 @@ TEST_CASE("Put N + Get N + Update N/2 KV Pair MemoryCacheMap Single Thread", "[r
         {
             REQUIRE_NOTHROW(memCache->get(keys.at(i)));
             REQUIRE(memCache->size() == numSamples);
-            auto [keyRead, valueRead] = memCache->get(keys.at(i));
+            auto optionalPair = memCache->get(keys.at(i));
+            REQUIRE(optionalPair.has_value());
+            const auto& keyRead = optionalPair.value().first;
+            const auto& valueRead = optionalPair.value().second;
             REQUIRE(keyRead == keys.at(i));
             REQUIRE(valueRead == values.at(i));
         }
@@ -267,7 +294,10 @@ TEST_CASE("Put N + Get N + Update N/2 KV Pair MemoryCacheMap Single Thread", "[r
         {
             REQUIRE_NOTHROW(memCache->get(keys.at(i)));
             REQUIRE(memCache->size() == numSamples);
-            auto [keyRead, valueRead] = memCache->get(keys.at(i));
+            auto optionalPair = memCache->get(keys.at(i));
+            REQUIRE(optionalPair.has_value());
+            const auto& keyRead = optionalPair.value().first;
+            const auto& valueRead = optionalPair.value().second;
             REQUIRE(keyRead == keys.at(i));
             if (i % 2 != 0)   // Odd => was Updated with previous value
             {
@@ -296,7 +326,7 @@ TEST_CASE("Put N + Remove N MemoryCacheMap Single Thread", "[runtime],[Put],[Rem
                                                                                                memType,
                                                                                                evictionStrategy);
 
-        // Get keys and values
+        // Generate keys and values
         auto [keys, values] = TestHelper::generateKVPairs(numSamples);
 
         // Put KV Pairs
@@ -309,7 +339,9 @@ TEST_CASE("Put N + Remove N MemoryCacheMap Single Thread", "[runtime],[Put],[Rem
         // Remove KV Pairs
         for (size_t i = 0; i < numSamples; i++)
         {
-            REQUIRE_NOTHROW(memCache->remove(keys.at(i)));
+            bool removeFlag = false;
+            REQUIRE_NOTHROW(removeFlag = memCache->remove(keys.at(i)));
+            REQUIRE(removeFlag);
             REQUIRE(memCache->size() == numSamples - i - 1);
         }
     }
@@ -330,7 +362,7 @@ TEST_CASE("Put N + Get Odds + Remove Even MemoryCacheMap Single Thread", "[runti
                                                                                                memType,
                                                                                                evictionStrategy);
 
-        // Get keys and values
+        // Generate keys and values
         auto [keys, values] = TestHelper::generateKVPairs(numSamples);
 
         // Put KV Pairs
@@ -346,15 +378,19 @@ TEST_CASE("Put N + Get Odds + Remove Even MemoryCacheMap Single Thread", "[runti
             const auto currentSize = memCache->size();
             if (i % 2 == 0)   // Even => Remove
             {
-
-                REQUIRE_NOTHROW(memCache->remove(keys.at(i)));
+                bool removeFlag = false;
+                REQUIRE_NOTHROW(removeFlag = memCache->remove(keys.at(i)));
+                REQUIRE(removeFlag);
                 REQUIRE(memCache->size() == currentSize - 1);
             }
             else   // Odd => Get
             {
                 REQUIRE_NOTHROW(memCache->get(keys.at(i)));
                 REQUIRE(memCache->size() == currentSize);
-                auto [keyRead, valueRead] = memCache->get(keys.at(i));
+                auto optionalPair = memCache->get(keys.at(i));
+                REQUIRE(optionalPair.has_value());
+                const auto& keyRead = optionalPair.value().first;
+                const auto& valueRead = optionalPair.value().second;
                 REQUIRE(keyRead == keys.at(i));
                 REQUIRE(valueRead == values.at(i));
             }

@@ -2,6 +2,7 @@
 #include "../KVCacheInterface/KVEnums.h"
 #include <cstddef>
 #include <memory>
+#include <optional>
 #include <spdlog/logger.h>
 #include <string>
 #include <vector>
@@ -24,8 +25,8 @@ namespace KVCache
                 AbstractMemoryCache& operator=(AbstractMemoryCache const&) = delete;
 
                 virtual std::vector<std::pair<std::string, std::string>> put(const std::string& key, const std::string& value) = 0;
-                virtual void remove(const std::string& key) = 0;
-                virtual std::pair<std::string, std::string> get(const std::string& key) const = 0;
+                virtual bool remove(const std::string& key) = 0;
+                virtual std::optional<std::pair<std::string, std::string>> get(const std::string& key) const = 0;
                 virtual size_t getByteSize() const = 0;
                 virtual size_t size() const = 0;
 

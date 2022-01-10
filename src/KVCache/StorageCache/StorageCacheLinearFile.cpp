@@ -95,7 +95,7 @@ void StorageCacheLinearFile::put(const std::string& key, const std::string& valu
     m_logger->info("StorageCacheLinearFile::put() completed for key={}, new bytesize={}", key, m_currentByteSize);
 }
 
-void StorageCacheLinearFile::remove(const std::string& key)
+bool StorageCacheLinearFile::remove(const std::string& key)
 {
 
     std::lock_guard<std::mutex> guard(m_fileMutex);
@@ -147,10 +147,12 @@ void StorageCacheLinearFile::remove(const std::string& key)
     // Switch the original file with the new one
     std::filesystem::remove(m_storagePath);
     std::filesystem::rename(pathBkp, m_storagePath);
+
+    return valueWasAlreadyRemoved;
 }
 
 
-std::pair<std::string, std::string> StorageCacheLinearFile::get(const std::string& key) const
+std::optional<std::pair<std::string, std::string>> StorageCacheLinearFile::get(const std::string& key) const
 {
     std::lock_guard<std::mutex> guard(m_fileMutex);
     std::ifstream pathStream{m_storagePath};
@@ -175,7 +177,7 @@ std::pair<std::string, std::string> StorageCacheLinearFile::get(const std::strin
         }
     }
     m_logger->error("StorageCacheLinearFile::get() failed for key={}", key);
-    throw std::runtime_error("Didn't find element with key: " + key);
+    return {};
 }
 
 

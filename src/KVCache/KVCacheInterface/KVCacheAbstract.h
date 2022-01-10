@@ -1,6 +1,7 @@
 #pragma once
 #include "KVOptionalParameters.h"
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 
@@ -15,7 +16,6 @@ namespace KVCache
         class KVCacheAbstract
         {
           public:
-
             /*! Virtual Destructor for the Object */
             virtual ~KVCacheAbstract() = default;
 
@@ -35,10 +35,10 @@ namespace KVCache
             virtual void put(const std::string& key, const std::string& value) = 0;
 
             /*! This method is used to remove a KV pair in the Cache given the Key */
-            virtual void remove(const std::string& key) = 0;
+            virtual bool remove(const std::string& key) = 0;
 
-            /*! This method is used to get a Value from the cache given the corrensponding Key */
-            virtual std::pair<std::string, std::string> get(const std::string& key) const = 0;
+            /*! This method is used to get a Value from the cache given the corrensponding Key. Will return an empty optional if not found */
+            virtual std::optional<std::pair<std::string, std::string>> get(const std::string& key) const = 0;
 
           protected:
             /*! Default Constructor is Protected */

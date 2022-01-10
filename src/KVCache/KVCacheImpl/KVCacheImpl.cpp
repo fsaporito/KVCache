@@ -33,19 +33,44 @@ KVCache::Internal::KVCacheImpl::KVCacheImpl(const Interface::KVOptionalParameter
 void KVCache::Internal::KVCacheImpl::put(const std::string& key, const std::string& value)
 {
     m_logger->info("KVCache put({})", key);
-    m_memoryCache->put(key, value);
+    auto removedData = m_memoryCache->put(key, value);
+    if (!removedData.empty())
+    {
+        for (const auto& kvPair: removedData)
+        {
+            const auto& removedKey = kvPair.first;
+            const auto& removedValue = kvPair.second;
+            m_storageCache->put(removedKey, removedValue);
+        }
+    }
 }
 
-void KVCache::Internal::KVCacheImpl::remove(const std::string& key)
+bool KVCache::Internal::KVCacheImpl::remove(const std::string& key)
 {
     m_logger->info("KVCache remove({})", key);
-    m_memoryCache->remove(key);
+    const bool wasPairRemoved = m_memoryCache->remove(key);
+    if (wasPairRemoved)
+    {
+        return wasPairRemoved;
+    }
+    else
+    {
+        return m_storageCache->remove(key);
+    }
 }
 
-std::pair<std::string, std::string> KVCache::Internal::KVCacheImpl::get(const std::string& key) const
+std::optional<std::pair<std::string, std::string>> KVCache::Internal::KVCacheImpl::get(const std::string& key) const
 {
     m_logger->info("KVCache get({})", key);
-    return m_memoryCache->get(key);
+    auto kvPair = m_memoryCache->get(key);
+    if (kvPair)
+    {
+        return kvPair;
+    }
+    else
+    {
+        return m_storageCache->get(key);
+    }
 }
 
 void KVCache::Internal::KVCacheImpl::setupKVCache(const Interface::KVOptionalParameters& optionalParams)

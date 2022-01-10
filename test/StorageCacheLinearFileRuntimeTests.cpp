@@ -58,7 +58,10 @@ TEST_CASE("Put + Get KV Pair StorageCacheLinearFile Single Thread", "[runtime],[
 
     // Get KV Pair
     REQUIRE_NOTHROW(storageCache->get(key));
-    auto [keyRead, valueRead] = storageCache->get(key);
+    auto optionalPair = storageCache->get(key);
+    REQUIRE(optionalPair.has_value());
+    const auto& keyRead = optionalPair.value().first;
+    const auto& valueRead = optionalPair.value().second;
     REQUIRE(keyRead == key);
     REQUIRE(valueRead == value);
 }
@@ -79,7 +82,10 @@ TEST_CASE("Put + Get + Update KV Pair StorageCacheLinearFile Single Thread", "[r
 
     // Get KV Pair
     REQUIRE_NOTHROW(storageCache->get(key));
-    const auto [keyRead, valueRead] = storageCache->get(key);
+    auto optionalPair = storageCache->get(key);
+    REQUIRE(optionalPair.has_value());
+    const auto& keyRead = optionalPair.value().first;
+    const auto& valueRead = optionalPair.value().second;
     REQUIRE(keyRead == key);
     REQUIRE(valueRead == value);
 
@@ -90,12 +96,15 @@ TEST_CASE("Put + Get + Update KV Pair StorageCacheLinearFile Single Thread", "[r
 
     // Get updated KV Pair
     REQUIRE_NOTHROW(storageCache->get(key));
-    const auto [keyRead2, valueRead2] = storageCache->get(key);
+    auto optionalPair2 = storageCache->get(key);
+    REQUIRE(optionalPair2.has_value());
+    const auto& keyRead2 = optionalPair2.value().first;
+    const auto& valueRead2 = optionalPair2.value().second;
     REQUIRE(keyRead2 == key);
     REQUIRE(valueRead2 == newValue);
 }
 
-TEST_CASE("Get Faillure on Empty StorageCacheLinearFile Single Thread", "[runtime],[Get],[Singlepair],[StorageCacheLinearFile][SingleThread]")
+TEST_CASE("Get returns empty optional on Empty StorageCacheLinearFile Single Thread", "[runtime],[Get],[Singlepair],[StorageCacheLinearFile][SingleThread]")
 {
     // Initialize StorageCache
     auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
@@ -105,7 +114,9 @@ TEST_CASE("Get Faillure on Empty StorageCacheLinearFile Single Thread", "[runtim
 
     // Get Faillure
     const std::string key = "TestKey";
-    REQUIRE_THROWS(storageCache->get(key));
+    REQUIRE_NOTHROW(storageCache->get(key));
+    auto optionalPair = storageCache->get(key);
+    REQUIRE(!optionalPair.has_value());
 }
 
 TEST_CASE("Put + Remove KV Pair StorageCacheLinearFile Single Thread", "[runtime],[Put],[Remove],[Singlepair],[StorageCacheLinearFile][SingleThread]")
@@ -123,11 +134,15 @@ TEST_CASE("Put + Remove KV Pair StorageCacheLinearFile Single Thread", "[runtime
     REQUIRE(storageCache->size() == 1);
 
     // Remove KV Pair
-    REQUIRE_NOTHROW(storageCache->remove(key));
+    bool removeFlag = false;
+    REQUIRE_NOTHROW(removeFlag = storageCache->remove(key));
+    REQUIRE(removeFlag);
     REQUIRE(storageCache->size() == 0);
 
     // Get KV Pair
-    REQUIRE_THROWS(storageCache->get(key));
+    REQUIRE_NOTHROW(storageCache->get(key));
+    auto optionalPair = storageCache->get(key);
+    REQUIRE(!optionalPair.has_value());
 }
 
 
@@ -141,7 +156,9 @@ TEST_CASE("Remove doesn't fail when key isn't present in StorageCacheLinearFile 
 
     // Remove KV Pair
     const std::string key = "TestKey";
-    REQUIRE_NOTHROW(storageCache->remove(key));
+    bool removeFlag = false;
+    REQUIRE_NOTHROW(removeFlag = storageCache->remove(key));
+    REQUIRE(!removeFlag);
     REQUIRE(storageCache->size() == 0);
 }
 
@@ -160,11 +177,15 @@ TEST_CASE("Put + Remove + Get Faillure KV Pair StorageCacheLinearFile Single Thr
     REQUIRE(storageCache->size() == 1);
 
     // Remove KV Pair
-    REQUIRE_NOTHROW(storageCache->remove(key));
+    bool removeFlag = false;
+    REQUIRE_NOTHROW(removeFlag = storageCache->remove(key));
+    REQUIRE(removeFlag);
     REQUIRE(storageCache->size() == 0);
 
     // Get Faillure
-    REQUIRE_THROWS(storageCache->get(key));
+    REQUIRE_NOTHROW(storageCache->get(key));
+    auto optionalPair = storageCache->get(key);
+    REQUIRE(!optionalPair.has_value());
 }
 
 
@@ -181,7 +202,7 @@ TEST_CASE("Put N + Get N KV Pair StorageCacheLinearFile Single Thread", "[runtim
         auto storageCache = KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath,
                                                                                                       storageType);
 
-        // Get keys and values
+        // Generate keys and values
         auto [keys, values] = TestHelper::generateKVPairs(numSamples);
 
         // Put KV Pairs
@@ -196,7 +217,10 @@ TEST_CASE("Put N + Get N KV Pair StorageCacheLinearFile Single Thread", "[runtim
         {
             REQUIRE_NOTHROW(storageCache->get(keys.at(i)));
             REQUIRE(storageCache->size() == numSamples);
-            auto [keyRead, valueRead] = storageCache->get(keys.at(i));
+            auto optionalPair = storageCache->get(keys.at(i));
+            REQUIRE(optionalPair.has_value());
+            const auto& keyRead = optionalPair.value().first;
+            const auto& valueRead = optionalPair.value().second;
             REQUIRE(keyRead == keys.at(i));
             REQUIRE(valueRead == values.at(i));
         }
@@ -216,7 +240,7 @@ TEST_CASE("Put N + Get N + Update N/2 KV Pair StorageCacheLinearFile Single Thre
         auto storageCache = KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath,
                                                                                                       storageType);
 
-        // Get keys and values
+        // Generate keys and values
         auto [keys, values] = TestHelper::generateKVPairs(numSamples);
 
         // Put KV Pairs
@@ -231,7 +255,10 @@ TEST_CASE("Put N + Get N + Update N/2 KV Pair StorageCacheLinearFile Single Thre
         {
             REQUIRE_NOTHROW(storageCache->get(keys.at(i)));
             REQUIRE(storageCache->size() == numSamples);
-            auto [keyRead, valueRead] = storageCache->get(keys.at(i));
+            auto optionalPair = storageCache->get(keys.at(i));
+            REQUIRE(optionalPair.has_value());
+            const auto& keyRead = optionalPair.value().first;
+            const auto& valueRead = optionalPair.value().second;
             REQUIRE(keyRead == keys.at(i));
             REQUIRE(valueRead == values.at(i));
         }
@@ -251,7 +278,10 @@ TEST_CASE("Put N + Get N + Update N/2 KV Pair StorageCacheLinearFile Single Thre
         {
             REQUIRE_NOTHROW(storageCache->get(keys.at(i)));
             REQUIRE(storageCache->size() == numSamples);
-            auto [keyRead, valueRead] = storageCache->get(keys.at(i));
+            auto optionalPair = storageCache->get(keys.at(i));
+            REQUIRE(optionalPair.has_value());
+            const auto& keyRead = optionalPair.value().first;
+            const auto& valueRead = optionalPair.value().second;
             REQUIRE(keyRead == keys.at(i));
             if (i % 2 != 0)   // Odd => was Updated with previous value
             {
@@ -278,7 +308,7 @@ TEST_CASE("Put N + Remove N StorageCacheLinearFile Single Thread", "[runtime],[P
         auto storageCache = KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath,
                                                                                                       storageType);
 
-        // Get keys and values
+        // Generate keys and values
         auto [keys, values] = TestHelper::generateKVPairs(numSamples);
 
         // Put KV Pairs
@@ -291,7 +321,9 @@ TEST_CASE("Put N + Remove N StorageCacheLinearFile Single Thread", "[runtime],[P
         // Remove KV Pairs
         for (size_t i = 0; i < numSamples; i++)
         {
-            REQUIRE_NOTHROW(storageCache->remove(keys.at(i)));
+            bool removeFlag = false;
+            REQUIRE_NOTHROW(removeFlag = storageCache->remove(keys.at(i)));
+            REQUIRE(removeFlag);
             REQUIRE(storageCache->size() == numSamples - i - 1);
         }
     }
@@ -310,7 +342,7 @@ TEST_CASE("Put N + Get Odds + Remove Even StorageCacheLinearFile Single Thread",
         auto storageCache = KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath,
                                                                                                       storageType);
 
-        // Get keys and values
+        // Generate keys and values
         auto [keys, values] = TestHelper::generateKVPairs(numSamples);
 
         // Put KV Pairs
@@ -326,15 +358,19 @@ TEST_CASE("Put N + Get Odds + Remove Even StorageCacheLinearFile Single Thread",
             const auto currentSize = storageCache->size();
             if (i % 2 == 0)   // Even => Remove
             {
-
-                REQUIRE_NOTHROW(storageCache->remove(keys.at(i)));
+                bool removeFlag = false;
+                REQUIRE_NOTHROW(removeFlag = storageCache->remove(keys.at(i)));
+                REQUIRE(removeFlag);
                 REQUIRE(storageCache->size() == currentSize - 1);
             }
             else   // Odd => Get
             {
                 REQUIRE_NOTHROW(storageCache->get(keys.at(i)));
                 REQUIRE(storageCache->size() == currentSize);
-                auto [keyRead, valueRead] = storageCache->get(keys.at(i));
+                auto optionalPair = storageCache->get(keys.at(i));
+                REQUIRE(optionalPair.has_value());
+                const auto& keyRead = optionalPair.value().first;
+                const auto& valueRead = optionalPair.value().second;
                 REQUIRE(keyRead == keys.at(i));
                 REQUIRE(valueRead == values.at(i));
             }

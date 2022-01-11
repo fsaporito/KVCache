@@ -1,7 +1,8 @@
 #!bin/bash
 
 cd ..
-cd build
+cd build/release
 make doxygen-docs
+cd ..
 cd ..
 cd scripts

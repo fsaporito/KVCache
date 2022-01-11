@@ -7,6 +7,9 @@ sudo apt install build-essential make clang
 sudo apt-get install cmake
 sudo apt-get install cmake-gui
 
+# Gcovr
+sudo apt-get install gcovr
+
 # Doxygen
 sudo apt-get install doxygen
 sudo apt-get install graphviz

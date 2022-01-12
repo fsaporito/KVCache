@@ -7,14 +7,18 @@ then
     exit
 fi
 cd ..
-cmake -S . -B ./build/release -DCMAKE_BUILD_TYPE:STRING=RELEASE
-cmake -S . -B ./build/debug -DCMAKE_BUILD_TYPE:STRING=DEBUG -DENABLE_COVERAGE:BOOL=$DENABLE_COVERAGE:BOOL=TRUE
+cmake -S . -B ./build/release -DCMAKE_BUILD_TYPE:STRING=Relese
+cmake -S . -B ./build/debug -DCMAKE_BUILD_TYPE:STRING=Debug -DENABLE_COVERAGE:BOOL=$DENABLE_COVERAGE:BOOL=TRUE
+cmake -S . -B ./build/minSizeRel -DCMAKE_BUILD_TYPE:STRING=MinSizeRel
+cmake -S . -B ./build/relWithDebInfo -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo
 cd scripts
 
 # Build
 cd ..
-cmake --build ./build/release --config RELEASE
-cmake --build ./build/debug --config DEBUG
+cmake --build ./build/release
+cmake --build ./build/debug
+cmake --build ./build/minSizeRel
+cmake --build ./build/relWithDebInfo
 cd scripts
 
 # Test

@@ -9,15 +9,14 @@ using namespace KVCache::Internal::MemoryCache;
 
 AbstractMemoryCache::AbstractMemoryCache(const size_t maxByteSize,
                                          const KVCache::Interface::CacheEvictionStrategy cacheEvictionStrategy,
-                                         const std::string& loggerOutputPath)
+                                         const std::string& loggerName)
     : m_maxByteSize(maxByteSize),
       m_cacheEvictionStrategy(cacheEvictionStrategy)
 {
-    const std::string loggerName = "AbstractMemoryCache";
     m_logger = spdlog::get(loggerName);
     if (!m_logger)
     {
-        m_logger = spdlog::basic_logger_mt(loggerName, loggerOutputPath);
+        m_logger = spdlog::basic_logger_mt(loggerName, "logs/" + loggerName + ".log");
     }
 };
 
@@ -29,7 +28,7 @@ std::unique_ptr<AbstractMemoryCache> AbstractMemoryCache::createMemoryCache(size
     auto m_logger = spdlog::get(loggerName);
     if (!m_logger)
     {
-        m_logger = spdlog::basic_logger_mt(loggerName, "logs/createMemoryCache.log");
+        m_logger = spdlog::basic_logger_mt(loggerName, "logs/" + loggerName + ".log");
     }
     m_logger->info("create memory cache of Type {}", KVCache::Interface::MemoryCacheToStrMap().at(memType));
     switch (memType)

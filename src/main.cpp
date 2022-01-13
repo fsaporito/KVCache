@@ -6,7 +6,7 @@
 #include "KVCache/KVCacheInterface/KVCacheAbstract.h"
 
 static constexpr auto USAGE =
-    R"(KVCache App.
+    R"(KVCache Client App.
  Usage:
     KVCacheClient [--option=value]
  Options:

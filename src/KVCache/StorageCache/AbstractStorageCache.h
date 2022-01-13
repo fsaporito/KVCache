@@ -32,7 +32,7 @@ namespace KVCache
                 std::string getStoragePath() const;
 
               protected:
-                AbstractStorageCache(const std::string& storagePath, const std::string& loggerOutputPath = "logs/AbstractStorageCache.log");
+                AbstractStorageCache(const std::string& storagePath, const std::string& loggerName = "AbstractStorageCache");
                 std::string m_storagePath;
                 std::shared_ptr<spdlog::logger> m_logger;
             };

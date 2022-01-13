@@ -8,7 +8,7 @@ using namespace KVCache::Internal::StorageCache;
 
 
 StorageCacheLinearFile::StorageCacheLinearFile(const std::string& storagePath)
-    : AbstractStorageCache(storagePath, "logs/StorageCacheLinearFile.log")
+    : AbstractStorageCache(storagePath, "StorageCacheLinearFile")
 {
     std::filesystem::remove(m_storagePath);
     m_logger->info("StorageCacheNone Object Created");

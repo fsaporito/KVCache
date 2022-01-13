@@ -10,7 +10,7 @@ KVCache::Internal::KVCacheImpl::KVCacheImpl()
     m_logger = spdlog::get(loggerName);
     if (!m_logger)
     {
-        m_logger = spdlog::basic_logger_mt(loggerName, "logs/KVCacheImpl.log");
+        m_logger = spdlog::basic_logger_mt(loggerName, "logs/" + loggerName + ".log");
     }
 
     m_logger->info("KVCacheImpl Constructor Starting Up");
@@ -29,7 +29,7 @@ KVCache::Internal::KVCacheImpl::KVCacheImpl(const Interface::KVOptionalParameter
     m_logger = spdlog::get(loggerName);
     if (!m_logger)
     {
-        m_logger = spdlog::basic_logger_mt(loggerName, "logs/KVCacheImpl.log");
+        m_logger = spdlog::basic_logger_mt(loggerName, "logs/" + loggerName + ".log");
     }
 
     m_logger->info("KVCacheImpl Constructor Starting Up");

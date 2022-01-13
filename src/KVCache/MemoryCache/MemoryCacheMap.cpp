@@ -9,7 +9,7 @@ template<typename T>
     requires isMap<T>
         MemoryCacheMap<T>::MemoryCacheMap(const size_t maxByteSize,
                                           const Interface::CacheEvictionStrategy cacheEvictionStrategy)
-        : AbstractMemoryCache(maxByteSize, cacheEvictionStrategy, "logs/MemoryCacheMap.log")
+        : AbstractMemoryCache(maxByteSize, cacheEvictionStrategy, "MemoryCacheMap")
     {
         m_logger->info("MemoryCacheMap Object Created");
     };

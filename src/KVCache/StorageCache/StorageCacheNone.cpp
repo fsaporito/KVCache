@@ -6,7 +6,7 @@ using namespace KVCache::Internal::StorageCache;
 
 
 StorageCacheNone::StorageCacheNone(const std::string& storagePath)
-    : AbstractStorageCache(storagePath, "logs/StorageCacheNone.log")
+    : AbstractStorageCache(storagePath, "StorageCacheNone")
 {
     spdlog::trace("StorageCacheNone Object Created");
 };

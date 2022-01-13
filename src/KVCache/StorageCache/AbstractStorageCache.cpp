@@ -9,14 +9,13 @@
 using namespace KVCache::Internal::StorageCache;
 
 AbstractStorageCache::AbstractStorageCache(const std::string& storagePath,
-                                           const std::string& loggerOutputPath)
+                                           const std::string& loggerName)
     : m_storagePath(storagePath)
 {
-    const std::string loggerName = "AbstractStorageCache";
     m_logger = spdlog::get(loggerName);
     if (!m_logger)
     {
-        m_logger = spdlog::basic_logger_mt(loggerName, loggerOutputPath);
+        m_logger = spdlog::basic_logger_mt(loggerName, "logs/" + loggerName + ".log");
     }
     m_logger->info("AbstractStorageCache on path {}", m_storagePath);
 }
@@ -28,7 +27,7 @@ std::unique_ptr<AbstractStorageCache> AbstractStorageCache::createStorageCache(c
     auto m_logger = spdlog::get(loggerName);
     if (!m_logger)
     {
-        m_logger = spdlog::basic_logger_mt(loggerName, "logs/createStorageCache.log");
+        m_logger = spdlog::basic_logger_mt(loggerName, "logs/" + loggerName + ".log");
     }
 
     m_logger->info("create storage cache of Type {}", KVCache::Interface::StorageCacheToStrMap().at(storageType));

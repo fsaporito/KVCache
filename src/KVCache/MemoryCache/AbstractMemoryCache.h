@@ -36,7 +36,7 @@ namespace KVCache
               protected:
                 AbstractMemoryCache(const size_t maxByteSize,
                                     const Interface::CacheEvictionStrategy cacheEvictionStrategy,
-                                    const std::string& loggerOutputPath = "logs/AbstractMemoryCache.log");
+                                    const std::string& loggerName = "AbstractMemoryCache");
                 size_t m_maxByteSize;
                 Interface::CacheEvictionStrategy m_cacheEvictionStrategy;
                 std::shared_ptr<spdlog::logger> m_logger;

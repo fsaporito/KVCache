@@ -1,12 +1,14 @@
 #pragma once
 #include <cstddef>
 #include <string>
+#include <unordered_map>
 
 namespace KVCache
 {
     namespace Interface
     {
 
+        // Size Constraints
         namespace SizeConstraint
         {
 
@@ -15,72 +17,75 @@ namespace KVCache
 
         }   // namespace SizeConstraint
 
+        // Memory Cache Type
         enum class MemoryCacheType
         {
             ORDERED_MAP,
             UNORDERED_MAP
         };
-        inline std::string MemoryCacheTypeToString(MemoryCacheType memCacheType)
+        const std::unordered_map<std::string, MemoryCacheType> StrToMemoryCacheTypeMap = {
+            {  "ORDERED_MAP",   MemoryCacheType::ORDERED_MAP},
+            {"UNORDERED_MAP", MemoryCacheType::UNORDERED_MAP}
+        };
+        inline std::unordered_map<MemoryCacheType, std::string> MemoryCacheToStrMap()
         {
-            switch(memCacheType)
+            std::unordered_map<MemoryCacheType, std::string> map;
+            for (const auto& [str, enumType]: StrToMemoryCacheTypeMap)
             {
-                using enum MemoryCacheType;
-                case ORDERED_MAP:
-                    return "Ordered Map";
-                case UNORDERED_MAP:
-                    return "Unordered Map";
-                default:
-                    return "Unknown";
+                map.insert({enumType, str});
             }
-        }
+            return map;
+        };
 
+        // Storage Cache Type
         enum class StorageCacheType
         {
             NONE,
             LINEAR_FILE
         };
-        inline std::string StorageCacheTypeToString(StorageCacheType storageCacheType)
+        const std::unordered_map<std::string, StorageCacheType> StrToStorageCacheTypeMap = {
+            {       "NONE",        StorageCacheType::NONE},
+            {"LINEAR_FILE", StorageCacheType::LINEAR_FILE}
+        };
+        inline std::unordered_map<StorageCacheType, std::string> StorageCacheToStrMap()
         {
-            switch(storageCacheType)
+            std::unordered_map<StorageCacheType, std::string> map;
+            for (const auto& [str, enumType]: StrToStorageCacheTypeMap)
             {
-                using enum StorageCacheType;
-                case NONE:
-                    return "None";
-                case LINEAR_FILE:
-                    return "Linear File";
-                default:
-                    return "Unknown";
+                map.insert({enumType, str});
             }
-        }
+            return map;
+        };
 
+        // Cache Eviction Strategy
         enum class CacheEvictionStrategy
         {
             FIFO,
             LRU,
             FLU
         };
-        inline std::string CacheEvictionStrategyToString(CacheEvictionStrategy cacheEvictionStrategy)
+        const std::unordered_map<std::string, CacheEvictionStrategy> StrToCacheEvictionStrategyTypeMap = {
+            {"FIFO", CacheEvictionStrategy::FIFO},
+            { "LRU",  CacheEvictionStrategy::LRU},
+            { "FLU",  CacheEvictionStrategy::FLU}
+        };
+        inline std::unordered_map<CacheEvictionStrategy, std::string> CacheEvictionStrategyToStrMap()
         {
-            switch(cacheEvictionStrategy)
+            std::unordered_map<CacheEvictionStrategy, std::string> map;
+            for (const auto& [str, enumType]: StrToCacheEvictionStrategyTypeMap)
             {
-                using enum CacheEvictionStrategy;
-                case FIFO:
-                    return "None";
-                case LRU:
-                    return "LRU";
-                case FLU:
-                    return "FLU";
-                default:
-                    return "Unknown";
+                map.insert({enumType, str});
             }
-        }
+            return map;
+        };
 
+        // Storage Path
         namespace StoragePath
         {
             const std::string defaultDirectory = ".";
             const std::string defaultPathName = ".KVCache.txt";
             const std::string defaultStoragePath = defaultDirectory + "/" + defaultPathName;
-        }
+        }   // namespace StoragePath
 
     }   // namespace Interface
 }   // namespace KVCache

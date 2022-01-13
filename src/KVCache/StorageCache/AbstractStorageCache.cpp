@@ -31,7 +31,7 @@ std::unique_ptr<AbstractStorageCache> AbstractStorageCache::createStorageCache(c
         m_logger = spdlog::basic_logger_mt(loggerName, "logs/createStorageCache.log");
     }
 
-    m_logger->info("create storage cache of Type {}", KVCache::Interface::StorageCacheTypeToString(storageType));
+    m_logger->info("create storage cache of Type {}", KVCache::Interface::StorageCacheToStrMap().at(storageType));
     switch (storageType)
     {
         using enum KVCache::Interface::StorageCacheType;

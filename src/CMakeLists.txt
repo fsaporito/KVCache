@@ -11,9 +11,9 @@ find_package(spdlog)
 find_package(docopt)
 
 # Generic test that uses conan libs
-add_executable(intro main.cpp)
+add_executable(KVCacheClient main.cpp)
 target_link_libraries(
-  intro
+  KVCacheClient
   PUBLIC project_options
           project_warnings
           KVCache

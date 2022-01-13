@@ -31,7 +31,7 @@ std::unique_ptr<AbstractMemoryCache> AbstractMemoryCache::createMemoryCache(size
     {
         m_logger = spdlog::basic_logger_mt(loggerName, "logs/createMemoryCache.log");
     }
-    m_logger->info("create memory cache of Type {}", KVCache::Interface::MemoryCacheTypeToString(memType));
+    m_logger->info("create memory cache of Type {}", KVCache::Interface::MemoryCacheToStrMap().at(memType));
     switch (memType)
     {
         using enum KVCache::Interface::MemoryCacheType;

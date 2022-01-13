@@ -4,11 +4,13 @@ set(KVCacheLibName "KVCache" PARENT_SCOPE)
 add_library(${KVCacheLibName} STATIC 
   KVCacheInterface/KVCacheAbstract.cpp 
   KVCacheInterface/KVCacheAbstract.h
+  KVCacheInterface/KVCacheException.h
   KVCacheInterface/KVEnums.h
   KVCacheInterface/KVOptionalParameters.cpp
   KVCacheInterface/KVOptionalParameters.h
   KVCacheImpl/KVCacheImpl.cpp 
   KVCacheImpl/KVCacheImpl.h
+  KVCacheImpl/KVExceptionsHelper.h
   MemoryCache/AbstractMemoryCache.cpp
   MemoryCache/AbstractMemoryCache.h
   MemoryCache/MemoryCacheMap.cpp

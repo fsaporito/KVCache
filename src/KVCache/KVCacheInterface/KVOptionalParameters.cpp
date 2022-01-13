@@ -16,13 +16,14 @@ KVCache::Interface::KVOptionalParameters::KVOptionalParameters(const size_t memM
 
 std::string KVCache::Interface::KVOptionalParameters::toString() const
 {
+
     std::string paramSt;
 
     paramSt += "memMaxSizeMB: " + std::to_string(m_memMaxSizeMB) + "\n";
-    paramSt += "memType: " + KVCache::Interface::MemoryCacheTypeToString(m_memType) + "\n";
-    paramSt += "storageType: " + KVCache::Interface::StorageCacheTypeToString(m_storageType) + "\n";
-    paramSt += "evictionStrategy: " + KVCache::Interface::CacheEvictionStrategyToString(m_evictionStrategy) + "\n";
-    paramSt += "evictionStrategy: " + m_storagePath + "\n";
+    paramSt += "memType: " + MemoryCacheToStrMap().at(m_memType) + "\n";
+    paramSt += "storageType: " + StorageCacheToStrMap().at(m_storageType) + "\n";
+    paramSt += "evictionStrategy: " + CacheEvictionStrategyToStrMap().at(m_evictionStrategy) + "\n";
+    paramSt += "storagePath: " + m_storagePath + "\n";
 
     return paramSt;
 }

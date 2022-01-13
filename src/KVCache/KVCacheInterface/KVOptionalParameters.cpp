@@ -4,7 +4,7 @@
 KVCache::Interface::KVOptionalParameters::KVOptionalParameters(const size_t memMaxSizeMB,
                                                                const MemoryCacheType memType,
                                                                const StorageCacheType storageType,
-                                                               const CacheEvictionStrategy evictionStrategy,
+                                                               const CacheEvictionStrategyType evictionStrategy,
                                                                const std::string& storagePath)
     : m_memMaxSizeMB(memMaxSizeMB),
       m_memType(memType),

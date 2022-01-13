@@ -58,20 +58,22 @@ namespace KVCache
         };
 
         // Cache Eviction Strategy
-        enum class CacheEvictionStrategy
+        enum class CacheEvictionStrategyType
         {
             FIFO,
+            LIFO,
             LRU,
-            FLU
+            MRU
         };
-        const std::unordered_map<std::string, CacheEvictionStrategy> StrToCacheEvictionStrategyTypeMap = {
-            {"FIFO", CacheEvictionStrategy::FIFO},
-            { "LRU",  CacheEvictionStrategy::LRU},
-            { "FLU",  CacheEvictionStrategy::FLU}
+        const std::unordered_map<std::string, CacheEvictionStrategyType> StrToCacheEvictionStrategyTypeMap = {
+            {"FIFO", CacheEvictionStrategyType::FIFO},
+            {"LIFO", CacheEvictionStrategyType::LIFO},
+            { "LRU",  CacheEvictionStrategyType::LRU},
+            { "MRU",  CacheEvictionStrategyType::MRU}
         };
-        inline std::unordered_map<CacheEvictionStrategy, std::string> CacheEvictionStrategyToStrMap()
+        inline std::unordered_map<CacheEvictionStrategyType, std::string> CacheEvictionStrategyToStrMap()
         {
-            std::unordered_map<CacheEvictionStrategy, std::string> map;
+            std::unordered_map<CacheEvictionStrategyType, std::string> map;
             for (const auto& [str, enumType]: StrToCacheEvictionStrategyTypeMap)
             {
                 map.insert({enumType, str});

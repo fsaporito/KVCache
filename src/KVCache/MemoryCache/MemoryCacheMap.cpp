@@ -8,7 +8,7 @@ using namespace KVCache::Internal::MemoryCache;
 template<typename T>
     requires isMap<T>
         MemoryCacheMap<T>::MemoryCacheMap(const size_t maxByteSize,
-                                          const Interface::CacheEvictionStrategy cacheEvictionStrategy)
+                                          const Interface::CacheEvictionStrategyType cacheEvictionStrategy)
         : AbstractMemoryCache(maxByteSize, cacheEvictionStrategy, "MemoryCacheMap")
     {
         m_logger->info("MemoryCacheMap Object Created");

@@ -23,7 +23,7 @@ namespace KVCache
             {
               public:
                 MemoryCacheMap(const size_t maxByteSize,
-                               const Interface::CacheEvictionStrategy cacheEvictionStrategy);
+                               const Interface::CacheEvictionStrategyType cacheEvictionStrategy);
 
                 ~MemoryCacheMap() = default;
                 MemoryCacheMap(const MemoryCacheMap&) = delete;

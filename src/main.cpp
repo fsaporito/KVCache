@@ -45,7 +45,7 @@ int main(int argc, const char** argv)
     auto storageCacheType = KVCache::Interface::StorageCacheType::NONE;
 
     const std::string cacheEvictionStrategyString = "cacheEvictionStrategy";
-    auto cacheEvictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+    auto cacheEvictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
 
     const std::string storagePathString = "storagePath";
     auto storagePath = KVCache::Interface::StoragePath::defaultStoragePath;

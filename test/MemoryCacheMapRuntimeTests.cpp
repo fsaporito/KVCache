@@ -9,7 +9,7 @@ TEST_CASE("Put 1 KV Pair into MemoryCacheMap Single Thread", "[runtime],[Put],[S
     // Initialize MemCache
     auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                            memType,
                                                                                            evictionStrategy);
@@ -26,7 +26,7 @@ TEST_CASE("Put 2 KV Pairs into MemoryCacheMap Single Thread", "[runtime],[Put],[
     // Initialize MemCache
     auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                            memType,
                                                                                            evictionStrategy);
@@ -48,7 +48,7 @@ TEST_CASE("Put + Get KV Pair into MemoryCacheMap Single Thread", "[runtime],[Put
     // Initialize MemCache
     auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                            memType,
                                                                                            evictionStrategy);
@@ -74,7 +74,7 @@ TEST_CASE("Put + Get + Update KV Pair into MemoryCacheMap Single Thread", "[runt
     // Initialize MemCache
     auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                            memType,
                                                                                            evictionStrategy);
@@ -113,7 +113,7 @@ TEST_CASE("Get Faillure on Empty MemoryCacheMap Single Thread", "[runtime],[Get]
     // Initialize MemCache
     auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                            memType,
                                                                                            evictionStrategy);
@@ -130,7 +130,7 @@ TEST_CASE("Put + Remove KV Pair into MemoryCacheMap Single Thread", "[runtime],[
     // Initialize MemCache
     auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                            memType,
                                                                                            evictionStrategy);
@@ -159,7 +159,7 @@ TEST_CASE("Remove doesn't fail when key isn't present in Single Thread", "[runti
     // Initialize MemCache
     auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                            memType,
                                                                                            evictionStrategy);
@@ -177,7 +177,7 @@ TEST_CASE("Put + Remove + Get Faillure KV Pair into MemoryCacheMap Single Thread
     // Initialize MemCache
     auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
     auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+    auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
     auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                            memType,
                                                                                            evictionStrategy);
@@ -211,7 +211,7 @@ TEST_CASE("Put N + Get N KV Pair MemoryCacheMap Single Thread", "[runtime],[Put]
         // Initialize MemCache
         auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
         auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
         auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                                memType,
                                                                                                evictionStrategy);
@@ -251,7 +251,7 @@ TEST_CASE("Put N + Get N + Update N/2 KV Pair MemoryCacheMap Single Thread", "[r
         // Initialize MemCache
         auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
         auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
         auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                                memType,
                                                                                                evictionStrategy);
@@ -321,7 +321,7 @@ TEST_CASE("Put N + Remove N MemoryCacheMap Single Thread", "[runtime],[Put],[Rem
         // Initialize MemCache
         auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
         auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
         auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                                memType,
                                                                                                evictionStrategy);
@@ -357,7 +357,7 @@ TEST_CASE("Put N + Get Odds + Remove Even MemoryCacheMap Single Thread", "[runti
         // Initialize MemCache
         auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_10_MB;
         auto memType = KVCache::Interface::MemoryCacheType::UNORDERED_MAP;
-        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategy::FIFO;
+        auto evictionStrategy = KVCache::Interface::CacheEvictionStrategyType::FIFO;
         auto memCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
                                                                                                memType,
                                                                                                evictionStrategy);

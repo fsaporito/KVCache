@@ -18,7 +18,7 @@ KVCache::Internal::KVCacheImpl::KVCacheImpl()
     Interface::KVOptionalParameters defaultOptionalParams{Interface::SizeConstraint::MAXSIZE_1_MB,
                                                           Interface::MemoryCacheType::UNORDERED_MAP,
                                                           Interface::StorageCacheType::NONE,
-                                                          Interface::CacheEvictionStrategy::FIFO,
+                                                          Interface::CacheEvictionStrategyType::FIFO,
                                                           Interface::StoragePath::defaultStoragePath};
     setupKVCache(defaultOptionalParams);
     m_logger->info("KVCacheImpl Constructor Completed");

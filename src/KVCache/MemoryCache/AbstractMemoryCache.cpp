@@ -8,7 +8,7 @@
 using namespace KVCache::Internal::MemoryCache;
 
 AbstractMemoryCache::AbstractMemoryCache(const size_t maxByteSize,
-                                         const KVCache::Interface::CacheEvictionStrategy cacheEvictionStrategy,
+                                         const KVCache::Interface::CacheEvictionStrategyType cacheEvictionStrategy,
                                          const std::string& loggerName)
     : m_maxByteSize(maxByteSize),
       m_cacheEvictionStrategy(cacheEvictionStrategy)
@@ -22,7 +22,7 @@ AbstractMemoryCache::AbstractMemoryCache(const size_t maxByteSize,
 
 std::unique_ptr<AbstractMemoryCache> AbstractMemoryCache::createMemoryCache(size_t maxByteSize,
                                                                             KVCache::Interface::MemoryCacheType memType,
-                                                                            KVCache::Interface::CacheEvictionStrategy cacheEvictionStrategy)
+                                                                            KVCache::Interface::CacheEvictionStrategyType cacheEvictionStrategy)
 {
     const std::string loggerName = "AbstractMemoryCache";
     auto m_logger = spdlog::get(loggerName);
@@ -48,7 +48,7 @@ size_t AbstractMemoryCache::getMaxByteSize() const
     return m_maxByteSize;
 }
 
-KVCache::Interface::CacheEvictionStrategy AbstractMemoryCache::getCacheEvictionStrategy() const
+KVCache::Interface::CacheEvictionStrategyType AbstractMemoryCache::getCacheEvictionStrategy() const
 {
     return m_cacheEvictionStrategy;
 }

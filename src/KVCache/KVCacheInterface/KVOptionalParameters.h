@@ -16,7 +16,7 @@ namespace KVCache
             explicit KVOptionalParameters(const size_t memMaxSizeMB,
                                           const MemoryCacheType memType,
                                           const StorageCacheType storageType,
-                                          const CacheEvictionStrategy evictionStrategy,
+                                          const CacheEvictionStrategyType evictionStrategy,
                                           const std::string& storagePath);
 
             std::string toString() const;
@@ -24,7 +24,7 @@ namespace KVCache
             size_t m_memMaxSizeMB;
             MemoryCacheType m_memType;
             StorageCacheType m_storageType;
-            CacheEvictionStrategy m_evictionStrategy;
+            CacheEvictionStrategyType m_evictionStrategy;
             std::string m_storagePath;
         };
 

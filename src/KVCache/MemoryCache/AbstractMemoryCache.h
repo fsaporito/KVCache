@@ -18,7 +18,7 @@ namespace KVCache
               public:
                 static std::unique_ptr<AbstractMemoryCache> createMemoryCache(size_t maxByteSize,
                                                                               KVCache::Interface::MemoryCacheType memType,
-                                                                              KVCache::Interface::CacheEvictionStrategy cacheEvictionStrategy);
+                                                                              KVCache::Interface::CacheEvictionStrategyType cacheEvictionStrategy);
 
                 virtual ~AbstractMemoryCache() = default;
                 AbstractMemoryCache(const AbstractMemoryCache&) = delete;
@@ -31,14 +31,14 @@ namespace KVCache
                 virtual size_t size() const = 0;
 
                 size_t getMaxByteSize() const;
-                Interface::CacheEvictionStrategy getCacheEvictionStrategy() const;
+                Interface::CacheEvictionStrategyType getCacheEvictionStrategy() const;
 
               protected:
                 AbstractMemoryCache(const size_t maxByteSize,
-                                    const Interface::CacheEvictionStrategy cacheEvictionStrategy,
+                                    const Interface::CacheEvictionStrategyType cacheEvictionStrategy,
                                     const std::string& loggerName = "AbstractMemoryCache");
                 size_t m_maxByteSize;
-                Interface::CacheEvictionStrategy m_cacheEvictionStrategy;
+                Interface::CacheEvictionStrategyType m_cacheEvictionStrategy;
                 std::shared_ptr<spdlog::logger> m_logger;
             };
         }   // namespace MemoryCache

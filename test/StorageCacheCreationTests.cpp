@@ -2,21 +2,18 @@
 #include "KVCache/StorageCache/StorageCacheNone.h"
 #include <catch2/catch.hpp>
 
+// This Macro Generates Data for RuntimeTests
+#define generateData()                                                                                                          \
+    auto storageType = GENERATE(KVCache::Interface::StorageCacheType::NONE, KVCache::Interface::StorageCacheType::LINEAR_FILE); \
+    auto storagePath = KVCache::Interface::StoragePath::defaultStoragePath;                                                     \
+    INFO("      -storageType=" << KVCache::Interface::StorageCacheToStrMap().at(storageType)                                    \
+                               << "storagePath=" << storagePath);                                                               \
+    REQUIRE_NOTHROW(KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath, storageType));
 
-TEST_CASE("Create StorageCache of Type None", "[creation],[StorageCache][StorageCacheNone]")
-{
-    auto storageType = KVCache::Interface::StorageCacheType::NONE;
-    auto storagePath = KVCache::Interface::StoragePath::defaultStoragePath;
-    REQUIRE_NOTHROW(KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath,
-                                                                                              storageType));
-}
 
-TEST_CASE("Create StorageCache of Type Linear File", "[creation],[StorageCache][StorageCacheLinearFile]")
+TEST_CASE("Create StorageCache", "[creation],[StorageCache]")
 {
-    auto storageType = KVCache::Interface::StorageCacheType::LINEAR_FILE;
-    auto storagePath = KVCache::Interface::StoragePath::defaultStoragePath;
-    REQUIRE_NOTHROW(KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(storagePath,
-                                                                                              storageType));
+    generateData();
 }
 
 TEST_CASE("Create StorageCache with Unknown Type", "[creation],[StorageCache]")

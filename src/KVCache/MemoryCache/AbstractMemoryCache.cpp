@@ -19,9 +19,9 @@ AbstractMemoryCache::AbstractMemoryCache(const size_t maxByteSize,
         m_logger = spdlog::basic_logger_mt(loggerName, "logs/" + loggerName + ".log");
     }
 
-    if (m_maxByteSize == 0)
+    if (m_maxByteSize == static_cast<size_t>(0))
     {
-        std::runtime_error("Memory Cache cannot have a maxSize of Zero");
+        throw std::runtime_error("Memory Cache cannot have a maxSize of Zero");
     }
 };
 

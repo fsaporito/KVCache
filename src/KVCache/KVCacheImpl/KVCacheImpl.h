@@ -32,6 +32,8 @@ namespace KVCache
             bool remove(const std::string& key) override;
             std::optional<std::pair<std::string, std::string>> get(const std::string& key) const override;
 
+            size_t size() const override;
+
           protected:
             void setupKVCache(const Interface::KVOptionalParameters& optionalParams);
             std::unique_ptr<MemoryCache::AbstractMemoryCache> m_memoryCache;

@@ -10,7 +10,8 @@ target_link_libraries(catch_main PRIVATE project_options)
 include_directories (../src) 
 
 add_executable(tests testHelpers.h
-                     KVCacheCreationTests.cpp 
+                     KVCacheCreationTests.cpp
+                     KVCacheRuntimeTests.cpp
                      MemoryCacheMapCreationTests.cpp
                      MemoryCacheMapRuntimeTests.cpp
                      CacheEvictionStrategyCreationTests.cpp

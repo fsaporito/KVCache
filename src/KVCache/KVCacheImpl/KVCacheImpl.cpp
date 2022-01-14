@@ -122,3 +122,13 @@ void KVCache::Internal::KVCacheImpl::setupKVCache(const Interface::KVOptionalPar
         Exceptions::kvCacheExceptionHandler(m_logger, __FILE__, __LINE__);
     }
 }
+
+
+size_t KVCache::Internal::KVCacheImpl::size() const
+{
+    const auto memoryCacheSize = m_memoryCache->size();
+    const auto storageCacheSize = m_storageCache->size();
+    const auto kvCacheSize = memoryCacheSize + storageCacheSize;
+    m_logger->info("getSize - Total size is {}, with primary cache size of {} and secondary cache size of {}", kvCacheSize, memoryCacheSize, storageCacheSize);
+    return kvCacheSize;
+}

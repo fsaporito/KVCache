@@ -282,15 +282,15 @@ TEST_CASE("Put N + Get All except pos N/2 + Evict N Keys into CacheEvictor", "[r
                 {
                     REQUIRE(readKey == keys.at(numSamplesHalfPos));
                 }
-                else if (i == numSamplesHalfPos)
+                else if (i == numSamples - numSamplesHalfPos)
                 {
                     continue;
                 }
-                else if (i > numSamplesHalfPos)
+                else if (i >= numSamples - numSamplesHalfPos - 1)
                 {
-                    REQUIRE(readKey == keys.at(numSamples - i - 1));
+                    REQUIRE(readKey == keys.at(numSamples - i - 2));
                 }
-                else   // if (i < numSamplesHalfPos)
+                else   // if (i < numSamples - numSamplesHalfPos)
                 {
                     REQUIRE(readKey == keys.at(numSamples - i - 1));
                 }

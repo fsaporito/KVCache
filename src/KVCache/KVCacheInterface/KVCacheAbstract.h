@@ -40,6 +40,9 @@ namespace KVCache
             /*! This method is used to get a Value from the cache given the corrensponding Key. Will return an empty optional if not found */
             virtual std::optional<std::pair<std::string, std::string>> get(const std::string& key) const = 0;
 
+            /*! This method will return the total number of kv pairs into the cache */
+            virtual size_t size() const = 0;
+
           protected:
             /*! Default Constructor is Protected */
             KVCacheAbstract() = default;

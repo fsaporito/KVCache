@@ -20,6 +20,7 @@
                                                                                         memType,                                   \
                                                                                         evictionStrategy);                         \
     auto [keys, values] = TestHelper::generateKVPairs(numSamples);
+
 // This Macro Generates Data for Evaluating Eviction from the outside of the memoryCache
 #define generateLongData()                                                                                                         \
     size_t numSamples = 10;                                                                                                        \
@@ -36,7 +37,7 @@
     auto cache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,                              \
                                                                                         memType,                                   \
                                                                                         evictionStrategy);                         \
-    auto [keys, values] = TestHelper::generateKVPairs(numSamples, "Key", TestHelper::generateLongValueOfGivenSize());
+    auto [keys, values] = TestHelper::generateKVPairs(numSamples, "Key", TestHelper::generateLongValueOfGivenSize());   // Generate values of size 0.1 MB
 
 TEST_CASE("Get returns empty on Empty MemoryCacheMap", "[runtime],[Get],[MemoryCacheMap]")
 {
@@ -238,7 +239,7 @@ TEST_CASE("Put N + Get Odds + Remove Even MemoryCacheMap", "[runtime],[Put],[Get
 }
 
 
-TEST_CASE("Put N + Get N-1 KV Pair MemoryCacheMap Eviction", "[runtime],[Put],[Get],[MemoryCacheMap][Eviction]")
+TEST_CASE("Put N + Get N KV Pair MemoryCacheMap Eviction", "[runtime],[Put],[Get],[MemoryCacheMap][Eviction]")
 {
 
     // Generate Multiple Datasets and Inizialize Memcache

@@ -126,7 +126,7 @@ int main(int argc, const char** argv)
 
         // Create KV Cache Object
         spdlog::info("Creating KVCache Object");
-        auto kvCache = KVCache::Interface::KVCacheAbstract::createKVCache();
+        auto kvCache = KVCache::Interface::KVCacheAbstract::createKVCache(optionalParams);
         spdlog::info("KVCache Object Created Succesfully");
 
         // Populate with Given File

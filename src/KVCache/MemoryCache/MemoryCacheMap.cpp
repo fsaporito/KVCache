@@ -41,18 +41,19 @@ template<typename T>
 
                     const auto oldValue = m_map.at(key);
                     const size_t oldValueByteSize = oldValue.size();
-                    m_currentByteSize -= oldValueByteSize;
-
-                    m_map[key] = value;
-                    m_currentByteSize += newValueByteSize;
+                    m_currentByteSize -= keyByteSize + oldValueByteSize;
+                    m_map.erase(key);
+                    m_evictionStrategy->remove(key);
                 }
                 else
                 {
                     m_logger->info("MemoryCacheMap::put() key={} isn't present, value will be added", key);
-                    const auto kvPair = std::make_pair(key, value);
-                    m_map.insert(kvPair);
-                    m_currentByteSize += keyByteSize + newValueByteSize;
                 }
+
+                // Add Element to the map
+                const auto kvPair = std::make_pair(key, value);
+                m_map.insert(kvPair);
+                m_currentByteSize += keyByteSize + newValueByteSize;
 
                 // Evict Cache Elements Until Size is OK
                 while (m_currentByteSize >= m_maxByteSize)

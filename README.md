@@ -352,7 +352,7 @@ To add them to the build process, uncomment the relative options in the root's c
 These tools must be installed on the develompent system and cmake must be able to find them on the current system path.
 See the section on optional tools for installation instructions.
 
-# Library Documentation
+## Library Documentation
 
 The library supports doxygen for automatically generating code documentation.
 See the section on optional tools for instructions on installing doxigen on your system.
@@ -366,3 +366,59 @@ If the process is successfull, the produced documentation will be found in the f
 ```
 build/Release/html
 ```
+
+# Test Client
+With the library a small sample client is deployed. The following are the possible options:
+```
+Usage:
+    KVCacheClient [--memCacheMaxSizeMB=<mb>] 
+				  [--memoryCacheType=<memType>] 
+				  [--storageCacheType=<storageType>] 
+				  [--cacheEvictionStrategy=<cacheEviction>] 
+				  [--storagePath=<path>] 
+				  [--fileLoad=<filePath>] 
+    KVCacheClient (-h | --help)
+    KVCacheClient --version
+ 
+ Options:
+          --memCacheMaxSizeMB=<mb>                  Max size as Integer of the Memory Cache in MB. [Default 1 MB].
+          --memoryCacheType=<memType>               Type of MemoryCache: (UNORDERED_MAP | ORDERED_MAP). [Default is UNORDERED_MAP].
+          --storageCacheType=<storageType>          Type of StorageCache: (NONE | LINEAR_FILE). [Default is NONE].
+          --cacheEvictionStrategy=<cacheEviction>   Algorithm for Cache Eviction when the MemoryCache is full: (FIFO | LIFO | LRU | MRU). [Default is FIFO].
+          --storagePath=<path>                      Path of the StorageCache. Default is current directory.
+          --fileLoad=<filePath>                     Path of a file to load into the cache. The file will need to have the KV Pairs on consecutive lines
+          -h --help                                 Show this screen.
+          --version                                 Show version.
+```
+
+In the example folder there are two usefull files. The first is a text file with a set of kv pairs (for the fileLoad option) and the second small bash script for launching the application.
+In general the full path of the compiled binary will be:
+* <details>
+	<summary>Single Configuration Builders (Make, Ninja)</summary>
+	- Release
+		```Bash
+		/build/Release/src/KVCacheClient
+		```
+
+	- Debug
+		```Bash
+		/build/Debug/src/KVCacheClient
+		```
+
+	- Release with Debug Symbols
+		```Bash
+		/build/RelWithDebInfo/src/KVCacheClient
+		```
+
+	- Release with Minimum Size
+		```Bash
+		/build/MinSizeRel/src/KVCacheClient
+		```
+	</details>
+
+* <details>
+	<summary>Multiconfiguration Builders (Visual Studio, Ninja Multi-Configuration)</summary>
+		```Bash
+		/build/src/KVCacheClient
+		```
+	</details>

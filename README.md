@@ -1,5 +1,9 @@
 # KV Cache
-C++ Implementation of a Key-Value cache 
+C++ Implementation of a Key-Value cache.
+
+The cache is composed by a primary cache (RAM Cache) and a secondary cache (Storage Cache).
+
+The RAM Cache has a maximum size. When the maximum capacity has been reached, KV Pairs will be evicted based on the selected cache eviction strategies to make place to new elements. Evicted elements will then be moved to the secondary cache.
 
 
 ## Tools and Required Software

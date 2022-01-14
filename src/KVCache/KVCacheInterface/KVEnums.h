@@ -12,8 +12,8 @@ namespace KVCache
         namespace SizeConstraint
         {
 
-            constexpr size_t MAXSIZE_1_MB = 1;
-            constexpr size_t MAXSIZE_10_MB = 10;
+            constexpr size_t MAXSIZE_1_MB = 1024 * 1024;
+            constexpr size_t MAXSIZE_10_MB = 10 * MAXSIZE_1_MB;
 
         }   // namespace SizeConstraint
 

@@ -32,6 +32,7 @@ namespace KVCache
 
                 size_t getMaxByteSize() const;
                 Interface::CacheEvictionStrategyType getCacheEvictionStrategy() const;
+                virtual std::vector<std::string> getKeys() const = 0;
 
               protected:
                 AbstractMemoryCache(const size_t maxByteSize,

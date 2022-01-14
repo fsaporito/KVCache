@@ -43,3 +43,13 @@ TEST_CASE("Create MemoryCacheMap with Unknown MemoryCache Type", "[creation],[Me
                                                                                           memType,
                                                                                           evictionStrategy));
 }
+
+TEST_CASE("Create MemoryCacheMap with Unknown CacheEvictionStrategy Type", "[creation],[MemoryCacheMap]")
+{
+    auto memMaxSizeMB = KVCache::Interface::SizeConstraint::MAXSIZE_1_MB;
+    auto memType = KVCache::Interface::MemoryCacheType::ORDERED_MAP;
+    auto evictionStrategy = static_cast<KVCache::Interface::CacheEvictionStrategyType>(100);
+    REQUIRE_THROWS(KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(memMaxSizeMB,
+                                                                                          memType,
+                                                                                          evictionStrategy));
+}

@@ -13,6 +13,8 @@ add_executable(tests testHelpers.h
                      KVCacheCreationTests.cpp 
                      MemoryCacheMapCreationTests.cpp
                      MemoryCacheMapRuntimeTests.cpp
+                     CacheEvictionStrategyCreationTests.cpp
+                     CacheEvictionStrategyRuntimeTests.cpp
                      StorageCacheCreationTests.cpp
                      StorageCacheLinearFileRuntimeTests.cpp
                      StorageCacheNoneRuntimeTests.cpp)

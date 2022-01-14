@@ -6,11 +6,12 @@
 namespace TestHelper
 {
 
-    inline std::string generateLongValueOfGivenSize(size_t size = 10.000, char value = '0')
+    // This method will generate a longValue of generic, by default of size 0.1 MB
+    inline std::string generateLongValueOfGivenSize(size_t size = (1024 * 1024) / 10, char value = '0')
     {
         std::string valueStr;
         valueStr.reserve(size);
-        for (size_t i = 0; i < 10000; i++)
+        for (size_t i = 0; i < size; i++)
         {
             valueStr.push_back(value);
         }

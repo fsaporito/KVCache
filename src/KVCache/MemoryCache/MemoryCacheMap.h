@@ -1,4 +1,5 @@
 #pragma once
+#include "../CacheEvictionStrategies/AbstractCacheEvictionStrategy.h"
 #include "AbstractMemoryCache.h"
 #include <concepts>
 #include <map>
@@ -68,10 +69,18 @@ namespace KVCache
                  */
                 size_t size() const override;
 
+                /*!
+                 * Returns a vector containing all the keys in the cache
+                 *
+                 *
+                 */
+                std::vector<std::string> getKeys() const override;
+
               protected:
                 mutable std::mutex m_mapMutex{};
                 size_t m_currentByteSize{0};
                 T m_map;
+                std::unique_ptr<CacheEvictionsStrategies::AbstractCacheEvictionStrategy> m_evictionStrategy;
             };
         }   // namespace MemoryCache
     }   // namespace Internal

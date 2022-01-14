@@ -111,7 +111,7 @@ void KVCache::Internal::KVCacheImpl::setupKVCache(const Interface::KVOptionalPar
     try
     {
         m_logger->info("setupKVCache - KVOptionalParameters:\n{}", optionalParams.toString());
-        m_memoryCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(optionalParams.m_memMaxSizeMB,
+        m_memoryCache = KVCache::Internal::MemoryCache::AbstractMemoryCache::createMemoryCache(optionalParams.m_memMaxSizeByte,
                                                                                                optionalParams.m_memType,
                                                                                                optionalParams.m_evictionStrategy);
         m_storageCache = KVCache::Internal::StorageCache::AbstractStorageCache::createStorageCache(optionalParams.m_storagePath,

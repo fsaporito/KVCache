@@ -22,6 +22,19 @@ add_library(${KVCacheLibName} STATIC
   StorageCache/StorageCacheNone.cpp  
   StorageCache/StorageCacheNone.h  
   StorageCache/UnknownStorageCacheTypeException.h
+  CacheEvictionStrategies/AbstractCacheEvictionStrategy.cpp
+  CacheEvictionStrategies/AbstractCacheEvictionStrategy.h
+  CacheEvictionStrategies/AbstractCacheEvictionStrategyInsertionOrdering.cpp
+  CacheEvictionStrategies/AbstractCacheEvictionStrategyInsertionOrdering.h
+  CacheEvictionStrategies/CacheEvictionFIFO.cpp
+  CacheEvictionStrategies/CacheEvictionFIFO.h
+  CacheEvictionStrategies/CacheEvictionLIFO.cpp
+  CacheEvictionStrategies/CacheEvictionLIFO.h
+  CacheEvictionStrategies/CacheEvictionLRU.cpp
+  CacheEvictionStrategies/CacheEvictionLRU.h
+  CacheEvictionStrategies/CacheEvictionMRU.cpp
+  CacheEvictionStrategies/CacheEvictionMRU.h
+  CacheEvictionStrategies/UnknownCacheEvictionStrategyException.h
 )
 if(WIN32 OR MSVC OR MSYS OR MINGW) # Windows: lib extension										
 	set_target_properties(${KVCacheLibName} PROPERTIES SUFFIX ".lib")
